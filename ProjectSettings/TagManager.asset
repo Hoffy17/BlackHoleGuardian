@@ -6,6 +6,7 @@ TagManager:
   tags:
   - BlackHole
   - PlayerProjectile
+  - WeaponUpgrade_Wide
   layers:
   - Default
   - TransparentFX

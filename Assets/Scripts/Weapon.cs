@@ -7,9 +7,11 @@ public class Weapon : MonoBehaviour
 
     //Creates a variable GameObject for player's projectiles
     public GameObject projectileObject;
-
     //The rate at which the player can fire projectiles
     public float refireRate;
+    public List<GameObject> weaponsToActivate;
+    [HideInInspector]
+    public bool allWeaponsActivated;
     //The amount of time that is required before the player can again fire projectiles
     private float timePassed;
     //A boolean to check whether the player is able to fire projectiles
@@ -19,6 +21,7 @@ public class Weapon : MonoBehaviour
     void Start()
     {
         canShoot = true;
+        allWeaponsActivated = false;
         timePassed = 0.0f;
     }
 
@@ -42,14 +45,20 @@ public class Weapon : MonoBehaviour
             //Allow the player to shoot
             canShoot = true;
         }
+
+        if (allWeaponsActivated)
+        {
+            for (int i = 0; i < weaponsToActivate.Count; i++)
+            {
+                weaponsToActivate[i].SetActive(true);
+            }
+        }
     }
 
     //A function that handles the player's ability to fire projectiles
     private void Shoot()
     {
-        //If the player is not dead
-        if (!transform.root.GetComponent<Player>().isDead)
-            //Instantiate projectiles at the player's location, in the direction the player is facing
-            Instantiate(projectileObject, transform.position, transform.rotation);
+        //Instantiate projectiles at the player's location, in the direction the player is facing
+        Instantiate(projectileObject, transform.position, transform.rotation);
     }
 }
