@@ -4,44 +4,55 @@ using UnityEngine;
 
 public class WeaponUpgrade : MonoBehaviour
 {
+    //Sets a weapon upgrade's speed
     public float weaponUpgradeSpeed;
 
+    //Calls the GameController.cs script
     private GameController gameController;
+    //Calls the Weapon.cs script
     private Weapon weapon;
+    //Calls the Spawner.cs script
     private Spawner spawner;
 
     void Start()
     {
+        //Finds the Game Controller and updates its public variables
         gameController = GameObject.Find("Game Controller").GetComponent<GameController>();
+        //Finds the main Weapon game object and updates its public variables
         weapon = GameObject.Find("Weapon_M").GetComponent<Weapon>();
+        //Finds the Spawners group and updates its public variables
         spawner = GameObject.Find("Spawners").GetComponent<Spawner>();
     }
 
-    //On every update, transform the enemy's position to move towards the origin, at the delegated speed
+    //On every update, transform the weapon upgrade's position to move towards the origin, at the delegated speed
     void Update()
     {
         transform.position = Vector3.MoveTowards(transform.position, Vector3.zero, weaponUpgradeSpeed * Time.deltaTime);
-        //Set the enemy to face the origin
-        transform.LookAt(Vector3.zero);
     }
 
-    //Checks if the enemy colliders with something
+    //Checks if the weapon upgrade colliders with something
     void OnTriggerEnter(Collider other)
     {
-        //If an enemy collides with the BlackHole, destroy the enemy and decrease health
+        //If the a weapon upgrade collides with the player
         if (other.tag == "Player")
         {
+            //If the weapon upgrade is a Wide type
             if (gameObject.tag == "WeaponUpgrade_Wide")
             {
+                //Set Guardina's extra weapons to active
                 weapon.allWeaponsActivated = true;
             }
+            //Destroy the weapon upgrade
             Destroy(gameObject);
+            //When a weapon upgrade is destroyed, set this boolean to false
             spawner.weaponUpgradeInScene = false;
         }
 
+        //If a weapon upgrade collides with the Black Hole, destroy the weapon upgrade
         if (other.tag == "BlackHole")
         {
             Destroy(gameObject);
+            //When a weapon upgrade is destroyed, set this boolean to false
             spawner.weaponUpgradeInScene = false;
         }
     }

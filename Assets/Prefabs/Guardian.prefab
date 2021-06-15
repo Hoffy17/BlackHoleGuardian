@@ -821,7 +821,7 @@ GameObject:
   m_Icon: {fileID: 2488908585195742037, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &5344512725119580498
 Transform:
   m_ObjectHideFlags: 0
@@ -850,6 +850,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   projectileObject: {fileID: 5187235416735716252, guid: e5457ed801086416c8c84158310d8f50, type: 3}
   refireRate: 0.1
+  weaponsToActivate: []
+  allWeaponsActivated: 0
+  canShoot: 0
 --- !u!1 &4280795185793553704
 GameObject:
   m_ObjectHideFlags: 0
@@ -894,7 +897,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   projectileObject: {fileID: 5187235416735716252, guid: e5457ed801086416c8c84158310d8f50, type: 3}
-  refireRate: 0.1
+  refireRate: 0.075
+  weaponsToActivate:
+  - {fileID: 5198456258201826376}
+  - {fileID: 3123584977455320331}
+  allWeaponsActivated: 0
+  canShoot: 0
 --- !u!1 &5198456258201826376
 GameObject:
   m_ObjectHideFlags: 0
@@ -911,7 +919,7 @@ GameObject:
   m_Icon: {fileID: 2488908585195742037, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &829204554119921713
 Transform:
   m_ObjectHideFlags: 0
@@ -940,6 +948,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   projectileObject: {fileID: 5187235416735716252, guid: e5457ed801086416c8c84158310d8f50, type: 3}
   refireRate: 0.1
+  weaponsToActivate: []
+  allWeaponsActivated: 0
+  canShoot: 0
 --- !u!1 &5562283021375827886
 GameObject:
   m_ObjectHideFlags: 0
@@ -1592,7 +1603,7 @@ Transform:
   m_GameObject: {fileID: 8409771676136351317}
   m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
   m_LocalPosition: {x: -2.5, y: 0, z: 0}
-  m_LocalScale: {x: 0.25, y: 1, z: 0.25}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4280795185793553687}
   - {fileID: 829204554119921713}

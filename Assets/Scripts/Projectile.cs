@@ -5,9 +5,9 @@ using UnityEngine;
 public class Projectile : MonoBehaviour
 {
 
-    //A public variable for the speed of the player's projectiles
+    //The speed of the player's projectiles
     public float projectileSpeed;
-    //A public variable for destroying the player's projectiles after a certain period of time has passed
+    //The amount of time before destroying the player's projectiles
     public float projectileLifeTime;
 
     //When this script is run, destroy the gameObject it is assigned to after the delegated time period
