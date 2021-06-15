@@ -206,7 +206,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &120047682
 Transform:
   m_ObjectHideFlags: 0
@@ -235,7 +235,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rotationAxis: {x: 0, y: 1, z: 0}
-  rotationSpeed: 100
+  rotationSpeed: 140
   wallRotation: 34
 --- !u!143 &120047684
 CharacterController:
@@ -261,7 +261,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-1254
+  m_Name: pb_Mesh45194
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -1308,6 +1308,9 @@ MonoBehaviour:
   score: 0
   highScore: 0
   isDead: 0
+  wideActivated: 0
+  rapidActivated: 0
+  largeActivated: 0
 --- !u!1 &551152409
 GameObject:
   m_ObjectHideFlags: 0
@@ -7190,7 +7193,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-1258
+  m_Name: pb_Mesh45254
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -8093,7 +8096,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!135 &922443220
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -8405,7 +8408,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!33 &1139402761
 MeshFilter:
   m_ObjectHideFlags: 10
@@ -9016,7 +9019,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1300834793
 RectTransform:
   m_ObjectHideFlags: 0
@@ -9711,7 +9714,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-901534
+  m_Name: pb_Mesh17200
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -9918,6 +9921,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spawnDelay: 3.5
   weaponUpgradeInScene: 0
+  spawnDelayList:
+  - 3.5
+  - 3.2
+  - 2.9
+  - 2.6
+  - 2.3
+  - 1.9
+  - 1.5
+  - 1.1
+  - 0.7
+  - 0.3
   spawners:
   - {fileID: 833654753}
   - {fileID: 110363479}
@@ -9929,6 +9943,8 @@ MonoBehaviour:
   - {fileID: 7791326313469652458, guid: 45f0b77977608427ca6f72117b3a2d36, type: 3}
   weaponUpgradeToSpawn:
   - {fileID: 8782345274250195758, guid: 187bedd6cc0e4477aad2ecafabf47031, type: 3}
+  - {fileID: 8782345274250195758, guid: cc59c05a5938d41aa884f001e738dd10, type: 3}
+  - {fileID: 8782345274250195758, guid: db6db1489797d40be9fa2dd4a0652d9b, type: 3}
 --- !u!1 &1486294785
 GameObject:
   m_ObjectHideFlags: 0
@@ -10250,7 +10266,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-1246
+  m_Name: pb_Mesh45004
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -10493,7 +10509,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh17014
+  m_Name: pb_Mesh17084
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -11312,10 +11328,42 @@ PrefabInstance:
       propertyPath: m_Tangents.Array.data[28].z
       value: NaN
       objectReference: {fileID: 0}
+    - target: {fileID: 3200570270552225255, guid: e58bee9ef2162450488eb06ed52f2954, type: 3}
+      propertyPath: projectileObject.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3200570270552225255, guid: e58bee9ef2162450488eb06ed52f2954, type: 3}
+      propertyPath: refireRate
+      value: 0.05
+      objectReference: {fileID: 0}
+    - target: {fileID: 3200570270552225255, guid: e58bee9ef2162450488eb06ed52f2954, type: 3}
+      propertyPath: projectileObject.Array.data[0]
+      value: 
+      objectReference: {fileID: 5187235416735716252, guid: e5457ed801086416c8c84158310d8f50, type: 3}
+    - target: {fileID: 3200570270552225255, guid: e58bee9ef2162450488eb06ed52f2954, type: 3}
+      propertyPath: projectileObject.Array.data[1]
+      value: 
+      objectReference: {fileID: 5187235416735716252, guid: 403611b6707f04e0794e6cac7a95f595, type: 3}
     - target: {fileID: 3676905829294970284, guid: e58bee9ef2162450488eb06ed52f2954, type: 3}
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 123378785}
+    - target: {fileID: 4280795185793553686, guid: e58bee9ef2162450488eb06ed52f2954, type: 3}
+      propertyPath: projectileObject.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4280795185793553686, guid: e58bee9ef2162450488eb06ed52f2954, type: 3}
+      propertyPath: refireRate
+      value: 0.05
+      objectReference: {fileID: 0}
+    - target: {fileID: 4280795185793553686, guid: e58bee9ef2162450488eb06ed52f2954, type: 3}
+      propertyPath: projectileObject.Array.data[0]
+      value: 
+      objectReference: {fileID: 5187235416735716252, guid: e5457ed801086416c8c84158310d8f50, type: 3}
+    - target: {fileID: 4280795185793553686, guid: e58bee9ef2162450488eb06ed52f2954, type: 3}
+      propertyPath: projectileObject.Array.data[1]
+      value: 
+      objectReference: {fileID: 5187235416735716252, guid: 403611b6707f04e0794e6cac7a95f595, type: 3}
     - target: {fileID: 5393159839357083881, guid: e58bee9ef2162450488eb06ed52f2954, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -11376,6 +11424,22 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7151336137157868168, guid: e58bee9ef2162450488eb06ed52f2954, type: 3}
+      propertyPath: projectileObject.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7151336137157868168, guid: e58bee9ef2162450488eb06ed52f2954, type: 3}
+      propertyPath: refireRate
+      value: 0.05
+      objectReference: {fileID: 0}
+    - target: {fileID: 7151336137157868168, guid: e58bee9ef2162450488eb06ed52f2954, type: 3}
+      propertyPath: projectileObject.Array.data[0]
+      value: 
+      objectReference: {fileID: 5187235416735716252, guid: e5457ed801086416c8c84158310d8f50, type: 3}
+    - target: {fileID: 7151336137157868168, guid: e58bee9ef2162450488eb06ed52f2954, type: 3}
+      propertyPath: projectileObject.Array.data[1]
+      value: 
+      objectReference: {fileID: 5187235416735716252, guid: 403611b6707f04e0794e6cac7a95f595, type: 3}
     - target: {fileID: 8409771676136351317, guid: e58bee9ef2162450488eb06ed52f2954, type: 3}
       propertyPath: m_Name
       value: Guardian

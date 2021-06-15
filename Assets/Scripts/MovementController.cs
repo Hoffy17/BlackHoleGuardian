@@ -12,7 +12,7 @@ public class MovementController : MonoBehaviour
 
     //Calls the GameController.cs script
     private GameController gameController;
-    private Wall wall;
+    //private Wall wall;
 
     private CharacterController playerController;
     private Vector3 directionVector = new Vector3();
@@ -22,7 +22,7 @@ public class MovementController : MonoBehaviour
     {
         //Finds the Game Controller and updates its public variables
         gameController = GameObject.Find("Game Controller").GetComponent<GameController>();
-        wall = GameObject.Find("Wall").GetComponent<Wall>();
+        //wall = GameObject.Find("Wall").GetComponent<Wall>();
 
         playerController = gameObject.GetComponent<CharacterController>();
     }
@@ -36,7 +36,7 @@ public class MovementController : MonoBehaviour
             {
                 //if ((transform.rotation.y * Mathf.Rad2Deg) < wallRotation)
                 //{
-                    Debug.Log(transform.rotation.y * Mathf.Rad2Deg);
+                    //Debug.Log(transform.rotation.y * Mathf.Rad2Deg);
                     transform.Rotate(rotationAxis * Time.deltaTime * rotationSpeed);
                 //}
             }
@@ -45,7 +45,7 @@ public class MovementController : MonoBehaviour
             {
                 //if ((transform.rotation.y * Mathf.Rad2Deg) > -wallRotation)
                 //{
-                    Debug.Log(transform.rotation.y * Mathf.Rad2Deg);
+                    //Debug.Log(transform.rotation.y * Mathf.Rad2Deg);
                     transform.Rotate(-rotationAxis * Time.deltaTime * rotationSpeed);
                 //}
             }

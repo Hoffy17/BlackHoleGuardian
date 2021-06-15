@@ -15,11 +15,20 @@ public class GameController : MonoBehaviour
     //Checks whether the game is over
     [HideInInspector]
     public bool isDead;
+    [HideInInspector]
+    public bool wideActivated;
+    [HideInInspector]
+    public bool rapidActivated;
+    [HideInInspector]
+    public bool largeActivated;
 
     void Start()
     {
         //At the start of the game, the player is alive
         isDead = false;
+        wideActivated = false;
+        rapidActivated = false;
+        largeActivated = false;
 
         //If a HighScore does not exist, set to 0, if it does, get it
         if (Save.Contains("HighScore") == false)

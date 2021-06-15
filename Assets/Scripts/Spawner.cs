@@ -4,13 +4,15 @@ using UnityEngine;
 
 public class Spawner : MonoBehaviour
 {
-
     //The rate at which the spawner should spawn game objects
+    [HideInInspector]
     public float spawnDelay;
     //Checks whether a weapon upgrade is in the scene
     [HideInInspector]
     public bool weaponUpgradeInScene = false;
 
+    //The rate at which the spawner should spawn game objects
+    public List<float> spawnDelayList;
     //A list of spawner objects in the scene
     public List<GameObject> spawners;
     //A list of enemy prefabs to be spawned
@@ -26,8 +28,6 @@ public class Spawner : MonoBehaviour
     private BoxCollider spawnBounds;
     //Calls the GameController.cs script
     private GameController gameController;
-    //Calls the Weapon.cs script
-    private Weapon weapon;
 
     //At the start of the game, the enemy spawner cannot spawn enemies
     void Start()
@@ -36,12 +36,31 @@ public class Spawner : MonoBehaviour
 
         //Finds the Game Controller and updates its public variables
         gameController = GameObject.Find("Game Controller").GetComponent<GameController>();
-        //Finds the main Weapon game object and updates its public variables
-        weapon = GameObject.Find("Weapon_M").GetComponent<Weapon>();
     }
 
     void Update()
     {
+        if (gameController.score < 5000)
+            spawnDelay = spawnDelayList[0];
+        else if (gameController.score >= 5000 && gameController.score < 10000)
+            spawnDelay = spawnDelayList[1];
+        else if (gameController.score >= 10000 && gameController.score < 15000)
+            spawnDelay = spawnDelayList[2];
+        else if (gameController.score >= 15000 && gameController.score < 20000)
+            spawnDelay = spawnDelayList[3];
+        else if (gameController.score >= 20000 && gameController.score < 25000)
+            spawnDelay = spawnDelayList[4];
+        else if (gameController.score >= 25000 && gameController.score < 30000)
+            spawnDelay = spawnDelayList[5];
+        else if (gameController.score >= 30000 && gameController.score < 35000)
+            spawnDelay = spawnDelayList[6];
+        else if (gameController.score >= 40000 && gameController.score < 45000)
+            spawnDelay = spawnDelayList[7];
+        else if (gameController.score >= 45000 && gameController.score < 50000)
+            spawnDelay = spawnDelayList[8];
+        else if (gameController.score >= 50000)
+            spawnDelay = spawnDelayList[9];
+
         //Runs through each spawner in the scene and spawns enemies and weapon upgrades
         for (int i = 0; i < spawners.Count; i++)
         {
@@ -84,19 +103,39 @@ public class Spawner : MonoBehaviour
         spawnRot = Quaternion.Euler(0f, 0f, 0f);
 
         //Grab a random number with a range
-        int spawnProbability = Random.Range(0, 10);
+        int spawnChance = Random.Range(0, 10);
 
         //If the player's score is 1500 or higher, there's a 20% chance of spawning enemy_type01_variety02
-        if (spawnProbability < 2 && gameController.score >= 1500)
+        if (spawnChance < 2 && gameController.score >= 1500)
             Instantiate(enemyToSpawn[1], spawnPos, spawnRot);
         //If the player's score is 5000 or higher, there's a 10% change of spawning enemy_type01_variety03
-        else if (spawnProbability == 3 && gameController.score >= 5000)
+        else if (spawnChance == 3 && gameController.score >= 5000)
+            Instantiate(enemyToSpawn[2], spawnPos, spawnRot);
+        else if (spawnChance == 4 && gameController.score >= 10000)
+            Instantiate(enemyToSpawn[1], spawnPos, spawnRot);
+        else if (spawnChance == 5 && gameController.score >= 20000)
+            Instantiate(enemyToSpawn[2], spawnPos, spawnRot);
+        else if (spawnChance == 6 && gameController.score >= 30000)
+            Instantiate(enemyToSpawn[1], spawnPos, spawnRot);
+        else if (spawnChance == 7 && gameController.score >= 40000)
+            Instantiate(enemyToSpawn[2], spawnPos, spawnRot);
+        else if (spawnChance == 8 && gameController.score >= 50000)
             Instantiate(enemyToSpawn[2], spawnPos, spawnRot);
         //If the player's score is 1500 or higher, a weapon upgrade is not currently in the scene and the player's weapons haven't already been activated
         //There's a 10% chance of spawning a Wide weapon upgrade
-        else if (spawnProbability == 9 && weapon.allWeaponsActivated == false && weaponUpgradeInScene == false && gameController.score >= 1500)
+        else if (spawnChance == 9 && weaponUpgradeInScene == false && gameController.score >= 1500)
         {
-            Instantiate(weaponUpgradeToSpawn[0], spawnPos, spawnRot);
+            int spawnChanceWU = Random.Range(0, 3);
+
+            if (spawnChanceWU == 0 && gameController.wideActivated == false)
+                Instantiate(weaponUpgradeToSpawn[0], spawnPos, spawnRot);
+            else if (spawnChanceWU == 1 && gameController.rapidActivated == false)
+                Instantiate(weaponUpgradeToSpawn[1], spawnPos, spawnRot);
+            else if (spawnChanceWU == 2 && gameController.largeActivated == false)
+                Instantiate(weaponUpgradeToSpawn[2], spawnPos, spawnRot);
+            else
+                Instantiate(enemyToSpawn[1], spawnPos, spawnRot);
+
             //When a weapon upgrade is spawned, set this boolean to true
             weaponUpgradeInScene = true;
         }

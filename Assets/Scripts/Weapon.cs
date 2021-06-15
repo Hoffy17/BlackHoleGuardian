@@ -5,15 +5,13 @@ using UnityEngine;
 public class Weapon : MonoBehaviour
 {
 
-    //Creates a variable GameObject for player projectiles
-    public GameObject projectileObject;
     //The rate at which the player can fire projectiles
     public float refireRate;
+    //Creates a variable GameObject for player projectiles
+    public List<GameObject> projectileObject;
     //A list of extra weapons that are activated by a weapon upgrade
     public List<GameObject> weaponsToActivate;
     //Checks whether all weapons have been set to active
-    [HideInInspector]
-    public bool allWeaponsActivated;
 
     //The amount of time that is required before the player can again fire projectiles
     private float timePassed;
@@ -30,7 +28,6 @@ public class Weapon : MonoBehaviour
     void Start()
     {
         canShoot = true;
-        allWeaponsActivated = false;
         timePassed = 0.0f;
 
         //Finds the Game Controller and updates its public variables
@@ -61,13 +58,16 @@ public class Weapon : MonoBehaviour
         }
 
         //When this bool is true, activate the Guardian's extra weapons
-        if (allWeaponsActivated)
+        if (gameController.wideActivated)
         {
             for (int i = 0; i < weaponsToActivate.Count; i++)
             {
                 weaponsToActivate[i].SetActive(true);
             }
         }
+
+        if (gameController.rapidActivated)
+            refireRate /= 1.25f;
 
         if (gameController.isDead || uiController.pauseMenu.activeSelf == true)
             canShoot = false;
@@ -76,7 +76,14 @@ public class Weapon : MonoBehaviour
     //Handles the player's ability to fire projectiles
     private void Shoot()
     {
-        //Instantiate projectiles at the player's location, in the direction the weapon is facing
-        Instantiate(projectileObject, transform.position, transform.rotation);
+        if (!gameController.largeActivated)
+        {
+            //Instantiate projectiles at the player's location, in the direction the weapon is facing
+            Instantiate(projectileObject[0], transform.position, transform.rotation);
+        }
+        else
+        {
+            Instantiate(projectileObject[1], transform.position, transform.rotation);
+        }
     }
 }

@@ -9,8 +9,6 @@ public class WeaponUpgrade : MonoBehaviour
 
     //Calls the GameController.cs script
     private GameController gameController;
-    //Calls the Weapon.cs script
-    private Weapon weapon;
     //Calls the Spawner.cs script
     private Spawner spawner;
 
@@ -18,8 +16,6 @@ public class WeaponUpgrade : MonoBehaviour
     {
         //Finds the Game Controller and updates its public variables
         gameController = GameObject.Find("Game Controller").GetComponent<GameController>();
-        //Finds the main Weapon game object and updates its public variables
-        weapon = GameObject.Find("Weapon_M").GetComponent<Weapon>();
         //Finds the Spawners group and updates its public variables
         spawner = GameObject.Find("Spawners").GetComponent<Spawner>();
     }
@@ -40,7 +36,15 @@ public class WeaponUpgrade : MonoBehaviour
             if (gameObject.tag == "WeaponUpgrade_Wide")
             {
                 //Set Guardina's extra weapons to active
-                weapon.allWeaponsActivated = true;
+                gameController.wideActivated = true;
+            }
+            else if (gameObject.tag == "WeaponUpgrade_Rapid")
+            {
+                gameController.rapidActivated = true;
+            }
+            else if (gameObject.tag == "WeaponUpgrade_Large")
+            {
+                gameController.largeActivated = true;
             }
             //Destroy the weapon upgrade
             Destroy(gameObject);
