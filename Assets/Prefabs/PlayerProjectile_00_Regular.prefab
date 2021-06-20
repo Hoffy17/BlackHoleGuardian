@@ -110,7 +110,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   projectileSpeed: 17
-  projectileLifeTime: 0.5
+  projectileLifeTime: 0.84
 --- !u!54 &-1966493389174143392
 Rigidbody:
   m_ObjectHideFlags: 0

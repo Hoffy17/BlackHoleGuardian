@@ -4,27 +4,28 @@ using UnityEngine;
 
 public class Weapon : MonoBehaviour
 {
-
+    [HideInInspector]
+    //Checks whether the player is able to fire projectiles
+    public bool canShoot;
     //The rate at which the player can fire projectiles
     public float refireRate;
-    //Creates a variable GameObject for player projectiles
+    //The rate at which the player can fire projectiles with a rapid weapon upgrade
+    public float refireRateRapid;
+
+    //A list of player projectile types
     public List<GameObject> projectileObject;
     //A list of extra weapons that are activated by a weapon upgrade
     public List<GameObject> weaponsToActivate;
-    //Checks whether all weapons have been set to active
 
     //The amount of time that is required before the player can again fire projectiles
     private float timePassed;
-    //Checks whether the player is able to fire projectiles
-    [HideInInspector]
-    public bool canShoot;
 
     //Calls the GameController.cs script
     private GameController gameController;
     //Calls the UIController.cs script
     private UIController uiController;
 
-    //At the start of the game, the player can shoot projectiles and extra weapons are not active
+    //At the start of the game, the player can shoot projectiles
     void Start()
     {
         canShoot = true;
@@ -39,7 +40,7 @@ public class Weapon : MonoBehaviour
     void Update()
     {
         //If the player presses Space and they are able to shoot projectiles
-        if ((Input.GetKey(KeyCode.Space)) && (canShoot == true))
+        if (Input.GetKey(KeyCode.Space) && (canShoot == true))
         {
             //Run the Shoot function and disable the player's ability to shoot
             Shoot();
@@ -66,21 +67,26 @@ public class Weapon : MonoBehaviour
             }
         }
 
+        //When this bool is true, shorten the refire rate
         if (gameController.rapidActivated)
-            refireRate /= 1.25f;
+            refireRate = refireRateRapid;
 
+        //When the player is dead, or the pause menu is active, the player cannot shoot
         if (gameController.isDead || uiController.pauseMenu.activeSelf == true)
             canShoot = false;
     }
 
     //Handles the player's ability to fire projectiles
+    //Instantiate projectiles at the player's location, in the direction the weapon is facing
     private void Shoot()
     {
+
+        //If the player doesn't have the large weapon upgrade, fire regular projects
         if (!gameController.largeActivated)
         {
-            //Instantiate projectiles at the player's location, in the direction the weapon is facing
             Instantiate(projectileObject[0], transform.position, transform.rotation);
         }
+        //If the player has the large weapon upgrade, fire large projects
         else
         {
             Instantiate(projectileObject[1], transform.position, transform.rotation);

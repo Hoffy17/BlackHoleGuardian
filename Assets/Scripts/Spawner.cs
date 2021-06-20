@@ -4,14 +4,11 @@ using UnityEngine;
 
 public class Spawner : MonoBehaviour
 {
-    //The rate at which the spawner should spawn game objects
     [HideInInspector]
-    public float spawnDelay;
     //Checks whether a weapon upgrade is in the scene
-    [HideInInspector]
-    public bool weaponUpgradeInScene = false;
+    public bool weaponUpgradeInScene;
 
-    //The rate at which the spawner should spawn game objects
+    //Variable rates for which spawners should spawn game objects
     public List<float> spawnDelayList;
     //A list of spawner objects in the scene
     public List<GameObject> spawners;
@@ -20,6 +17,8 @@ public class Spawner : MonoBehaviour
     //A list of weapon upgrade prefabs to be spawned
     public List<GameObject> weaponUpgradeToSpawn;
 
+    //The current rate at which spawners should spawn game objects
+    private float spawnDelay;
     //Measures time since the last enemy was spawned
     private float timePassed;
     //Checks whether a spawner can spawn
@@ -32,6 +31,7 @@ public class Spawner : MonoBehaviour
     //At the start of the game, the enemy spawner cannot spawn enemies
     void Start()
     {
+        weaponUpgradeInScene = false;
         canSpawn = false;
 
         //Finds the Game Controller and updates its public variables
@@ -40,6 +40,7 @@ public class Spawner : MonoBehaviour
 
     void Update()
     {
+        //Changes the rate at which spawners can spawn, as the player's score increases
         if (gameController.score < 5000)
             spawnDelay = spawnDelayList[0];
         else if (gameController.score >= 5000 && gameController.score < 10000)
@@ -94,21 +95,20 @@ public class Spawner : MonoBehaviour
         //Defines the random range within which game objects can spawn, as the bounds of the box collider
         float xPos = Random.Range((spawnBounds.size.x * -0.5f), (spawnBounds.size.x * 0.5f)) + spawnBounds.gameObject.transform.position.x;
         float zPos = Random.Range((spawnBounds.size.z * -0.5f), (spawnBounds.size.z * 0.5f)) + spawnBounds.gameObject.transform.position.z;
-        //Create a variable for a game object's spawn position
+        //Create a Vector3 for a game object's spawn position
         Vector3 spawnPos = new Vector3(xPos, 0.0f, zPos);
 
         //Define the game object's rotation variable as a Quaternion
         Quaternion spawnRot = new Quaternion();
-        //Then use the Euler function to convert the game object's rotation into a Vector3
+        //Then the Euler function converts the spawned object's rotation into a Vector3
         spawnRot = Quaternion.Euler(0f, 0f, 0f);
 
         //Grab a random number with a range
         int spawnChance = Random.Range(0, 10);
 
-        //If the player's score is 1500 or higher, there's a 20% chance of spawning enemy_type01_variety02
+        //Based on the player's score, each random int spawns an enemy variant
         if (spawnChance < 2 && gameController.score >= 1500)
             Instantiate(enemyToSpawn[1], spawnPos, spawnRot);
-        //If the player's score is 5000 or higher, there's a 10% change of spawning enemy_type01_variety03
         else if (spawnChance == 3 && gameController.score >= 5000)
             Instantiate(enemyToSpawn[2], spawnPos, spawnRot);
         else if (spawnChance == 4 && gameController.score >= 10000)
@@ -121,25 +121,28 @@ public class Spawner : MonoBehaviour
             Instantiate(enemyToSpawn[2], spawnPos, spawnRot);
         else if (spawnChance == 8 && gameController.score >= 50000)
             Instantiate(enemyToSpawn[2], spawnPos, spawnRot);
-        //If the player's score is 1500 or higher, a weapon upgrade is not currently in the scene and the player's weapons haven't already been activated
-        //There's a 10% chance of spawning a Wide weapon upgrade
+        //If the player's score is 1500 or higher and a weapon upgrade is not currently in the scene
+        //There's a 10% chance of spawning a weapon upgrade
         else if (spawnChance == 9 && weaponUpgradeInScene == false && gameController.score >= 1500)
         {
+            //Another random int is rolled
             int spawnChanceWU = Random.Range(0, 3);
 
+            //Each random int spawns a different weapon upgrade, provided the player doesn't already have that upgrade
             if (spawnChanceWU == 0 && gameController.wideActivated == false)
                 Instantiate(weaponUpgradeToSpawn[0], spawnPos, spawnRot);
             else if (spawnChanceWU == 1 && gameController.rapidActivated == false)
                 Instantiate(weaponUpgradeToSpawn[1], spawnPos, spawnRot);
             else if (spawnChanceWU == 2 && gameController.largeActivated == false)
                 Instantiate(weaponUpgradeToSpawn[2], spawnPos, spawnRot);
+            //If none of the above conditions are met, an enemy is spawned
             else
                 Instantiate(enemyToSpawn[1], spawnPos, spawnRot);
 
             //When a weapon upgrade is spawned, set this boolean to true
             weaponUpgradeInScene = true;
         }
-        //If none of the above conditions are met, spawn enemy_type01_variety01
+        //If none of the above conditions are met, the slowest enemy type is spawned
         else
             Instantiate(enemyToSpawn[0], spawnPos, spawnRot);
     }

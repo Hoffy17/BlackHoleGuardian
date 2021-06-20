@@ -12,25 +12,38 @@ public class GameController : MonoBehaviour
     //The player's high score
     public int highScore;
 
-    //Checks whether the game is over
     [HideInInspector]
+    //Checks whether the player can move
     public bool isDead;
     [HideInInspector]
+    public bool overheated;
+    [HideInInspector]
+    public bool blackHoleCollapsed;
+    [HideInInspector]
+    //Checks whether the game is over
+    public bool gameIsOver;
+    [HideInInspector]
+    //Checks whether the player has acquired the wide weapon upgrade
     public bool wideActivated;
     [HideInInspector]
+    //Checks whether the player has acquired the rapid weapon upgrade
     public bool rapidActivated;
     [HideInInspector]
+    //Checks whether the player has acquired the large weapon upgrade
     public bool largeActivated;
 
     void Start()
     {
-        //At the start of the game, the player is alive
+        //At the start of the game, the player is alive and all weapon upgrades are not active
         isDead = false;
+        gameIsOver = false;
+        overheated = false;
+        blackHoleCollapsed = false;
         wideActivated = false;
         rapidActivated = false;
         largeActivated = false;
 
-        //If a HighScore does not exist, set to 0, if it does, get it
+        //If a High Score does not exist, set it to 0, if it does, get it
         if (Save.Contains("HighScore") == false)
         {
             Save.SetInt("HighScore", highScore);
@@ -48,14 +61,11 @@ public class GameController : MonoBehaviour
         {
             highScore = score;
         }
-        //If the player dies, reload the scene
-        if (isDead)
+
+        //If the player dies and their high score exceeds the saved high score, overwrite it
+        if (gameIsOver && (highScore > Save.GetInt("HighScore")))
         {
-            //If the player's high score exceeds the saved high score, overwrite it
-            if (highScore > Save.GetInt("HighScore"))
-            {
-                Save.SetInt("HighScore", highScore);
-            }
+            Save.SetInt("HighScore", highScore);
         }
     }
 }

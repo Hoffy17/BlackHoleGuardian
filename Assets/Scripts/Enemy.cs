@@ -20,7 +20,7 @@ public class Enemy : MonoBehaviour
         uiController = GameObject.Find("UI Controller").GetComponent<UIController>();
     }
 
-    //On every update, transform the enemy's position to move towards the origin, at the delegated speed
+    //On every update, transform the enemy's position to move towards the origin, at a variable speed
     void Update()
     {
         transform.position = Vector3.MoveTowards(transform.position, Vector3.zero, enemySpeed * Time.deltaTime);
@@ -31,7 +31,7 @@ public class Enemy : MonoBehaviour
     //Checks if the enemy collides with something
     void OnTriggerEnter(Collider other)
     {
-        //If an enemy collides with the BlackHole, destroy the enemy and decrease health
+        //If an enemy collides with the Black Hole, destroy the enemy and decrease health
         if (other.tag == "BlackHole")
         {
             Destroy(gameObject);
@@ -40,7 +40,10 @@ public class Enemy : MonoBehaviour
 
             //If health falls to zero, the player is dead
             if (gameController.health <= 0)
+            {
                 gameController.isDead = true;
+                gameController.blackHoleCollapsed = true;
+            }
         }
 
         //If an enemy collides with a player projectile, destroy the enemy and increase the score

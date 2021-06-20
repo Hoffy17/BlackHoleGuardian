@@ -20,34 +20,40 @@ public class WeaponUpgrade : MonoBehaviour
         spawner = GameObject.Find("Spawners").GetComponent<Spawner>();
     }
 
-    //On every update, transform the weapon upgrade's position to move towards the origin, at the delegated speed
+    //On every update, transform the weapon upgrade's position to move towards the origin, at a variable speed
     void Update()
     {
         transform.position = Vector3.MoveTowards(transform.position, Vector3.zero, weaponUpgradeSpeed * Time.deltaTime);
     }
 
-    //Checks if the weapon upgrade colliders with something
+    //Checks if the weapon upgrade collides with something
     void OnTriggerEnter(Collider other)
     {
-        //If the a weapon upgrade collides with the player
+        //If the weapon upgrade collides with the player
         if (other.tag == "Player")
         {
-            //If the weapon upgrade is a Wide type
+            //And if the weapon upgrade is a Wide type
             if (gameObject.tag == "WeaponUpgrade_Wide")
             {
-                //Set Guardina's extra weapons to active
+                //Set this boolean to true
                 gameController.wideActivated = true;
             }
+            //Or if the weapon upgrade is a Rapid type
             else if (gameObject.tag == "WeaponUpgrade_Rapid")
             {
+                //Set this boolean to true
                 gameController.rapidActivated = true;
             }
+            //Or if the weapon upgrade is a Large type
             else if (gameObject.tag == "WeaponUpgrade_Large")
             {
+                //Set this boolean to true
                 gameController.largeActivated = true;
             }
+
             //Destroy the weapon upgrade
             Destroy(gameObject);
+
             //When a weapon upgrade is destroyed, set this boolean to false
             spawner.weaponUpgradeInScene = false;
         }
@@ -56,6 +62,7 @@ public class WeaponUpgrade : MonoBehaviour
         if (other.tag == "BlackHole")
         {
             Destroy(gameObject);
+
             //When a weapon upgrade is destroyed, set this boolean to false
             spawner.weaponUpgradeInScene = false;
         }
