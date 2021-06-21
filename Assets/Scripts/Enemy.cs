@@ -4,64 +4,90 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
+    //-----------------------------------------------------------------------------Public Variables (Value-Types)
     //Sets an enemy's speed
     public float enemySpeed;
 
-    //Calls the GameController.cs script
-    private GameController gameController;
-    //Calls the UIController.cs script
-    private UIController uiController;
+    //-----------------------------------------------------------------------------Public Variables (Reference-Types)
+    //Particle system when an enemy dies
+    public ParticleSystem enemyDiePS;
 
+    //-----------------------------------------------------------------------------Private Variables (Reference-Types)
+    //Calls the following scripts
+    private GameController gameController;
+    private UIController uiController;
+    private MovementController movementController;
+    //Sound effect played when an enemy dies
     private AudioSource enemyDied;
+    //Sound effect played when the Black Hole takes damage
     private AudioSource takeDamage;
 
-    public ParticleSystem enemyDiePS;
 
     void Start()
     {
-        //Finds the Game Controller and updates its public variables
+        //Find these scripts and updates their public variables
         gameController = GameObject.Find("Game Controller").GetComponent<GameController>();
-        //Finds the UI Controller and updates its public variables
         uiController = GameObject.Find("UI Controller").GetComponent<UIController>();
-
+        movementController = GameObject.Find("Guardian Controller").GetComponent<MovementController>();
+        //Find these audio sources
         enemyDied = GameObject.Find("EnemyDied").GetComponent<AudioSource>();
         takeDamage = GameObject.Find("TakeDamage").GetComponent<AudioSource>();
     }
 
-    //On every update, transform the enemy's position to move towards the origin, at a variable speed
+
     void Update()
     {
+        //Transform the enemy's position to move towards the origin, at a variable speed
         transform.position = Vector3.MoveTowards(transform.position, Vector3.zero, enemySpeed * Time.deltaTime);
         //Rotate the enemy to face the origin
         transform.LookAt(Vector3.zero);
     }
 
+
     //Checks if the enemy collides with something
     void OnTriggerEnter(Collider other)
     {
-        //If an enemy collides with the Black Hole, destroy the enemy and decrease health
+        //Checks if an enemy collides with the Black Hole
         if (other.tag == "BlackHole")
-        {
-            Destroy(gameObject);
-            gameController.health -= 1;
-            uiController.healthBar.value -= 1;
-            takeDamage.Play(0);
+            TakeDamage();
 
-            //If health falls to zero, the player is dead
-            if (gameController.health <= 0)
-            {
-                gameController.isDead = true;
-                gameController.blackHoleCollapsed = true;
-            }
-        }
-
-        //If an enemy collides with a player projectile, destroy the enemy and increase the score
+        //Checks if an enemy collides with a player projectile
         if (other.tag == "PlayerProjectile")
+            KillEnemy();
+    }
+
+
+    private void TakeDamage()
+    {
+        //Destroy the enemy
+        Destroy(gameObject);
+
+        //Decrease Black Hole's health
+        gameController.health -= 1;
+        uiController.healthBar.value -= 1;
+
+        //Play sound effect
+        takeDamage.Play(0);
+
+        //If health falls to zero, the player is dead and the Black Hole starts to collapse
+        if (gameController.health <= 0)
         {
-            Destroy(gameObject);
-            Instantiate(enemyDiePS, transform.position, transform.rotation);
-            gameController.score += 100;
-            enemyDied.Play(0);
+            gameController.isDead = true;
+            movementController.blackHoleCollapsed = true;
         }
+    }
+
+
+    private void KillEnemy()
+    {
+        //Destroy the enemy and instantiate particles
+        Destroy(gameObject);
+        Instantiate(enemyDiePS, transform.position, transform.rotation);
+
+        //Increase the score
+        gameController.score += 100;
+
+        //Play sound effect
+        enemyDied.Play(0);
     }
 }

@@ -6,6 +6,16 @@ using UnityEngine.SceneManagement;
 
 public class UIController : MonoBehaviour
 {
+    //-----------------------------------------------------------------------------Public Variables (Reference-Types)
+    //-------------------------------------------------------------Main Menu UI
+    public GameObject mainMenu;
+    public Button mainMenuArcadeButton;
+    public Button mainMenuControlsButton;
+    public Button mainMenuExitGameButton;
+    //-------------------------------------------------------------How To Play UI
+    public GameObject controlsMenu;
+    public Button controlsMenuButton;
+    //-------------------------------------------------------------Arcade UI
     //The health bar slider
     public Slider healthBar;
     //The overheat bar slider;
@@ -14,39 +24,38 @@ public class UIController : MonoBehaviour
     public Text scoreText;
     //The high score text box
     public Text highScoreText;
+    //-------------------------------------------------------------Pause UI
+    public GameObject pauseMenu;
+    public Button pauseRetryButton;
+    public Button pauseQuitButton;
+    //-------------------------------------------------------------Game Over UI
+    public GameObject gameOverMenu;
     //This text box explains why the game ended
     public Text gameOverReasonText;
     //The text box displaying the player's final score
     public Text gameOverScoreText;
-
-    //UI elements
-    public GameObject mainMenu;
-    public GameObject controlsMenu;
-    public GameObject pauseMenu;
-    public GameObject gameOverMenu;
-    public Button mainMenuArcadeButton;
-    public Button mainMenuControlsButton;
-    public Button mainMenuExitGameButton;
-    public Button controlsMenuButton;
-    public Button pauseRetryButton;
-    public Button pauseQuitButton;
     public Button gameOverRetryButton;
     public Button gameOverQuitButton;
-
-    public AudioSource BGM;
-    public AudioSource selectSound;
-
+    //-------------------------------------------------------------Other
     //Game objects to activate when the game is started
     public List<GameObject> gameObjects;
     //UI objects to deactivate when the game is started
     public List<GameObject> menuObjects;
+    //The background music
+    public AudioSource BGM;
+    //Menu selection sound effect
+    public AudioSource selectSound;
 
-    //Calls the GameController.cs script
-    private GameController gameController;
+    //-----------------------------------------------------------------------------Private Variables (Value-Types)
     //The scene for the project
     private Scene main;
     //Checks if the player selected the retry button when the scene is reloaded
     private bool playerSelectedRetry = false;
+
+    //-----------------------------------------------------------------------------Private Variables (Reference-Types)
+    //Calls the GameController.cs script
+    private GameController gameController;
+
 
     void Start()
     {
@@ -59,21 +68,12 @@ public class UIController : MonoBehaviour
         //Finds the Game Controller and updates its public variables
         gameController = GameObject.Find("Game Controller").GetComponent<GameController>();
 
-        //Registers events for when each button is clicked
-        mainMenuArcadeButton.onClick.AddListener(() => buttonCallBack(mainMenuArcadeButton));
-        mainMenuControlsButton.onClick.AddListener(() => buttonCallBack(mainMenuControlsButton));
-        mainMenuExitGameButton.onClick.AddListener(() => buttonCallBack(mainMenuExitGameButton));
-        controlsMenuButton.onClick.AddListener(() => buttonCallBack(controlsMenuButton));
-        pauseRetryButton.onClick.AddListener(() => buttonCallBack(pauseRetryButton));
-        pauseQuitButton.onClick.AddListener(() => buttonCallBack(pauseQuitButton));
-        gameOverRetryButton.onClick.AddListener(() => buttonCallBack(gameOverRetryButton));
-        gameOverQuitButton.onClick.AddListener(() => buttonCallBack(gameOverQuitButton));
+        //Registers events for when each UI button is clicked
+        RegisterButtons();
 
         //Checks for a saved boolean variable and creates it if it does not yet exist
         if (Save.Contains("PlayerSelectedRetry") == false)
-        {
             Save.SetBool("PlayerSelectedRetry", playerSelectedRetry);
-        }
         //If the boolean exists
         else
         {
@@ -89,6 +89,7 @@ public class UIController : MonoBehaviour
             }
         }
     }
+
 
     void Update()
     {
@@ -125,14 +126,21 @@ public class UIController : MonoBehaviour
                 Time.timeScale = 1;
             }
         }
-
-        /*//If the player presses the Enter key while the Controls Menu is active
-        if (Input.GetKey(KeyCode.Return) && controlsMenu == true)
-        {
-            //Run the Start Game function
-            StartGame();
-        }*/
     }
+
+
+    private void RegisterButtons()
+    {
+        mainMenuArcadeButton.onClick.AddListener(() => buttonCallBack(mainMenuArcadeButton));
+        mainMenuControlsButton.onClick.AddListener(() => buttonCallBack(mainMenuControlsButton));
+        mainMenuExitGameButton.onClick.AddListener(() => buttonCallBack(mainMenuExitGameButton));
+        controlsMenuButton.onClick.AddListener(() => buttonCallBack(controlsMenuButton));
+        pauseRetryButton.onClick.AddListener(() => buttonCallBack(pauseRetryButton));
+        pauseQuitButton.onClick.AddListener(() => buttonCallBack(pauseQuitButton));
+        gameOverRetryButton.onClick.AddListener(() => buttonCallBack(gameOverRetryButton));
+        gameOverQuitButton.onClick.AddListener(() => buttonCallBack(gameOverQuitButton));
+    }
+
 
     //Controls what happens when each button is pressed
     void buttonCallBack(Button buttonPressed)
@@ -151,9 +159,7 @@ public class UIController : MonoBehaviour
         }
 
         if (buttonPressed == mainMenuExitGameButton)
-        {
             Application.Quit();
-        }
 
         if (buttonPressed == controlsMenuButton)
         {
@@ -163,43 +169,35 @@ public class UIController : MonoBehaviour
         }
 
         if (buttonPressed == pauseRetryButton)
-        {
-            playerSelectedRetry = true;
-            Save.SetBool("PlayerSelectedRetry", playerSelectedRetry);
-
-            SceneManager.LoadScene(main.name);
-        }
+            Retry();
 
         if (buttonPressed == pauseQuitButton)
-        {
             SceneManager.LoadScene(main.name);
-        }
 
         if (buttonPressed == gameOverRetryButton)
-        {
-            playerSelectedRetry = true;
-            Save.SetBool("PlayerSelectedRetry", playerSelectedRetry);
-
-            SceneManager.LoadScene(main.name);
-        }
+            Retry();
 
         if (buttonPressed == gameOverQuitButton)
-        {
             SceneManager.LoadScene(main.name);
-        }
     }
 
+
     //A function for activating game objects relevant to the game and deactivating menus
-    void StartGame()
+    private void StartGame()
     {
         for (int i = 0; i < gameObjects.Count; i++)
-        {
             gameObjects[i].SetActive(true);
-        }
 
         for (int i = 0; i < menuObjects.Count; i++)
-        {
             menuObjects[i].SetActive(false);
-        }
+    }
+
+
+    private void Retry()
+    {
+        playerSelectedRetry = true;
+        Save.SetBool("PlayerSelectedRetry", playerSelectedRetry);
+
+        SceneManager.LoadScene(main.name);
     }
 }

@@ -4,21 +4,23 @@ using UnityEngine;
 
 public class Projectile : MonoBehaviour
 {
-
-    //The speed of the player's projectiles
+    //-----------------------------------------------------------------------------Public Variables (Value-Types)
+    //Speed of the player's projectiles
     public float projectileSpeed;
-    //The amount of time before destroying the player's projectiles
+    //Amount of time before destroying the player's projectiles
     public float projectileLifeTime;
 
-    //When this script is run, destroy the gameObject it is assigned to after a variable time period
+
     void Start()
     {
+        //Destroy the projectile after a variable time period
         Destroy(gameObject, projectileLifeTime);
     }
 
-    //On every update, translate the projectile forward at a variable speed
+
     void Update()
     {
+        //Translate the projectile forward at a variable speed
         transform.Translate(Vector3.forward * projectileSpeed * Time.deltaTime);
     }
 }

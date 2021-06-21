@@ -383,7 +383,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-2346
+  m_Name: pb_Mesh-1256
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -662,11 +662,11 @@ MonoBehaviour:
   guardian: {fileID: 1689661447}
   blackHole: {fileID: 922443219}
   explosion: {fileID: 828796409}
+  playerExplodePS: {fileID: 1298960876858340407, guid: d44328e63a24e7a4191e80486cd112d3, type: 3}
   getUpgradePS: {fileID: 1788446791}
   blackHoleAnimator: {fileID: 922443225}
   playerExplode: {fileID: 1696801376}
   blackHoleCollapse: {fileID: 1183229353}
-  playerExplodePS: {fileID: 1298960876858340407, guid: d44328e63a24e7a4191e80486cd112d3, type: 3}
 --- !u!143 &120047684
 CharacterController:
   m_ObjectHideFlags: 0
@@ -691,7 +691,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-2350
+  m_Name: pb_Mesh-1260
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -1952,7 +1952,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-2354
+  m_Name: pb_Mesh-1264
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -5373,7 +5373,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 40a299aa285f44014bebde9f1268c8ec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  weaponUpgradeInScene: 0
   spawnDelayList:
   - 3.5
   - 3.2
@@ -5385,6 +5384,25 @@ MonoBehaviour:
   - 1.1
   - 0.8
   - 0.7
+  levelControllers:
+  - 5000
+  - 10000
+  - 15000
+  - 20000
+  - 25000
+  - 30000
+  - 35000
+  - 40000
+  - 50000
+  difficultyControllers:
+  - 1500
+  - 5000
+  - 10000
+  - 20000
+  - 30000
+  - 40000
+  - 50000
+  weaponUpgradeInScene: 0
   spawners:
   - {fileID: 833654753}
   - {fileID: 110363479}

@@ -4,12 +4,18 @@ using UnityEngine;
 
 public class Spawner : MonoBehaviour
 {
-    [HideInInspector]
-    //Checks whether a weapon upgrade is in the scene
-    public bool weaponUpgradeInScene;
-
+    //-----------------------------------------------------------------------------Public Variables (Value-Types)
     //Variable rates for which spawners should spawn game objects
     public List<float> spawnDelayList;
+    //Scores that the player must reach before the spawn delay decreases
+    public List<float> levelControllers;
+    //Scores that the player must reach before faster enemies are spawned instead of slower ones
+    public List<float> difficultyControllers;
+    //Checks whether a weapon upgrade is in the scene
+    [HideInInspector]
+    public bool weaponUpgradeInScene;
+
+    //-----------------------------------------------------------------------------Public Variables (Reference-Types)
     //A list of spawner objects in the scene
     public List<GameObject> spawners;
     //A list of enemy prefabs to be spawned
@@ -17,50 +23,37 @@ public class Spawner : MonoBehaviour
     //A list of weapon upgrade prefabs to be spawned
     public List<GameObject> weaponUpgradeToSpawn;
 
+    //-----------------------------------------------------------------------------Private Variables (Value-Types)
     //The current rate at which spawners should spawn game objects
     private float spawnDelay;
     //Measures time since the last enemy was spawned
     private float timePassed;
     //Checks whether a spawner can spawn
     private bool canSpawn;
+
+    //-----------------------------------------------------------------------------Private Variables (Reference-Types)
     //Calls the Box Collider component for spawners in the scene
     private BoxCollider spawnBounds;
     //Calls the GameController.cs script
     private GameController gameController;
 
-    //At the start of the game, the enemy spawner cannot spawn enemies
+
     void Start()
     {
-        weaponUpgradeInScene = false;
+        //At the start of the game, the enemy spawner cannot spawn enemies
         canSpawn = false;
+        //And there is not a weapon upgrade in the scene
+        weaponUpgradeInScene = false;
 
         //Finds the Game Controller and updates its public variables
         gameController = GameObject.Find("Game Controller").GetComponent<GameController>();
     }
 
+
     void Update()
     {
         //Changes the rate at which spawners can spawn, as the player's score increases
-        if (gameController.score < 5000)
-            spawnDelay = spawnDelayList[0];
-        else if (gameController.score >= 5000 && gameController.score < 10000)
-            spawnDelay = spawnDelayList[1];
-        else if (gameController.score >= 10000 && gameController.score < 15000)
-            spawnDelay = spawnDelayList[2];
-        else if (gameController.score >= 15000 && gameController.score < 20000)
-            spawnDelay = spawnDelayList[3];
-        else if (gameController.score >= 20000 && gameController.score < 25000)
-            spawnDelay = spawnDelayList[4];
-        else if (gameController.score >= 25000 && gameController.score < 30000)
-            spawnDelay = spawnDelayList[5];
-        else if (gameController.score >= 30000 && gameController.score < 35000)
-            spawnDelay = spawnDelayList[6];
-        else if (gameController.score >= 40000 && gameController.score < 45000)
-            spawnDelay = spawnDelayList[7];
-        else if (gameController.score >= 45000 && gameController.score < 50000)
-            spawnDelay = spawnDelayList[8];
-        else if (gameController.score >= 50000)
-            spawnDelay = spawnDelayList[9];
+        LevelController();
 
         //Runs through each spawner in the scene and spawns enemies and weapon upgrades
         for (int i = 0; i < spawners.Count; i++)
@@ -68,14 +61,10 @@ public class Spawner : MonoBehaviour
             //Calls the box collider component for a spawner and gets its size
             spawnBounds = spawners[i].GetComponent<BoxCollider>();
 
-            //If the spawner can spawn
+            //Checks if the spawner can spawn
             if (canSpawn)
-            {
-                //Run the Spawn function and disable the spawner's ability to spawn
+                //Handles the spawner's ability to spawn
                 Spawn();
-                canSpawn = false;
-                timePassed = 0.0f;
-            }
 
             //Count time until the spawner can spawn again
             timePassed += Time.deltaTime;
@@ -89,7 +78,7 @@ public class Spawner : MonoBehaviour
         }
     }
 
-    //A function that handles the enemy spawner's ability to spawn
+
     private void Spawn()
     {
         //Defines the random range within which game objects can spawn, as the bounds of the box collider
@@ -107,23 +96,22 @@ public class Spawner : MonoBehaviour
         int spawnChance = Random.Range(0, 10);
 
         //Based on the player's score, each random int spawns an enemy variant
-        if (spawnChance < 2 && gameController.score >= 1500)
+        if (spawnChance < 2 && gameController.score >= difficultyControllers[0])
             Instantiate(enemyToSpawn[1], spawnPos, spawnRot);
-        else if (spawnChance == 3 && gameController.score >= 5000)
+        else if (spawnChance == 3 && gameController.score >= difficultyControllers[1])
             Instantiate(enemyToSpawn[2], spawnPos, spawnRot);
-        else if (spawnChance == 4 && gameController.score >= 10000)
+        else if (spawnChance == 4 && gameController.score >= difficultyControllers[2])
             Instantiate(enemyToSpawn[1], spawnPos, spawnRot);
-        else if (spawnChance == 5 && gameController.score >= 20000)
+        else if (spawnChance == 5 && gameController.score >= difficultyControllers[3])
             Instantiate(enemyToSpawn[2], spawnPos, spawnRot);
-        else if (spawnChance == 6 && gameController.score >= 30000)
+        else if (spawnChance == 6 && gameController.score >= difficultyControllers[4])
             Instantiate(enemyToSpawn[1], spawnPos, spawnRot);
-        else if (spawnChance == 7 && gameController.score >= 40000)
+        else if (spawnChance == 7 && gameController.score >= difficultyControllers[5])
             Instantiate(enemyToSpawn[2], spawnPos, spawnRot);
-        else if (spawnChance == 8 && gameController.score >= 50000)
+        else if (spawnChance == 8 && gameController.score >= difficultyControllers[6])
             Instantiate(enemyToSpawn[2], spawnPos, spawnRot);
-        //If the player's score is 1500 or higher and a weapon upgrade is not currently in the scene
-        //There's a 10% chance of spawning a weapon upgrade
-        else if (spawnChance == 9 && weaponUpgradeInScene == false && gameController.score >= 1500)
+        //If a weapon upgrade is not currently in the scene, there's a 10% chance of spawning a weapon upgrade
+        else if (spawnChance == 9 && weaponUpgradeInScene == false && gameController.score >= difficultyControllers[0])
         {
             //Another random int is rolled
             int spawnChanceWU = Random.Range(0, 3);
@@ -145,5 +133,35 @@ public class Spawner : MonoBehaviour
         //If none of the above conditions are met, the slowest enemy type is spawned
         else
             Instantiate(enemyToSpawn[0], spawnPos, spawnRot);
+
+        //Disable the spawner's ability to spawn
+        canSpawn = false;
+        //Start the timer until the spawner can spawn again
+        timePassed = 0.0f;
+    }
+
+
+    private void LevelController()
+    {
+        if (gameController.score < levelControllers[0])
+            spawnDelay = spawnDelayList[0];
+        else if (gameController.score >= levelControllers[0] && gameController.score < levelControllers[1])
+            spawnDelay = spawnDelayList[1];
+        else if (gameController.score >= levelControllers[1] && gameController.score < levelControllers[2])
+            spawnDelay = spawnDelayList[2];
+        else if (gameController.score >= levelControllers[2] && gameController.score < levelControllers[3])
+            spawnDelay = spawnDelayList[3];
+        else if (gameController.score >= levelControllers[3] && gameController.score < levelControllers[4])
+            spawnDelay = spawnDelayList[4];
+        else if (gameController.score >= levelControllers[4] && gameController.score < levelControllers[5])
+            spawnDelay = spawnDelayList[5];
+        else if (gameController.score >= levelControllers[5] && gameController.score < levelControllers[6])
+            spawnDelay = spawnDelayList[6];
+        else if (gameController.score >= levelControllers[6] && gameController.score < levelControllers[7])
+            spawnDelay = spawnDelayList[7];
+        else if (gameController.score >= levelControllers[7] && gameController.score < levelControllers[8])
+            spawnDelay = spawnDelayList[8];
+        else if (gameController.score >= levelControllers[8])
+            spawnDelay = spawnDelayList[9];
     }
 }

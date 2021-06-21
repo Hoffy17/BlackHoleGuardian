@@ -4,183 +4,194 @@ using UnityEngine;
 
 public class MovementController : MonoBehaviour
 {
-    //The axis at which the player rotates around the Black Hole
+    //-----------------------------------------------------------------------------Public Variables (Value-Types)
+    //Axis at which the player rotates around the Black Hole
     public Vector3 rotationAxis = Vector3.up;
-    //The speed at which that rotation occurs
+    //Speed at which that rotation occurs
     public float rotationSpeed;
-    //The rate at which the weapons heat up when the player is trying to fire them
+    //Rate at which the overheat meter increases
     public float overheatRate;
-    //The rate at which the weapons cool down when the player is not trying to fire them
+    //Rate at which the overheat meter decreases
     public float coolRate;
-    //public float wallRotation;
+    //Checks whether to play particles when the player collects an upgrade
+    [HideInInspector]
     public bool playUpgradePS;
+    //Checks whether the Black Hole has started to collapse
+    [HideInInspector]
+    public bool blackHoleCollapsed;
 
+    //-----------------------------------------------------------------------------Public Variables (Reference-Types)
+    //Game Objects in the scene
     public GameObject guardian;
     public GameObject blackHole;
+    //Particles when the player overheats
     public GameObject explosion;
-    public GameObject getUpgradePS;
-    public Animator blackHoleAnimator;
-    public AudioSource playerExplode;
-    public AudioSource blackHoleCollapse;
     public ParticleSystem playerExplodePS;
+    //Particles when the player collects an upgrade
+    public GameObject getUpgradePS;
+    //Animator controlling the Black Hole collapsing
+    public Animator blackHoleAnimator;
+    //Sound effect when the player overheats
+    public AudioSource playerExplode;
+    //Sound effect when the Black Hole collapses
+    public AudioSource blackHoleCollapse;
 
+    //-----------------------------------------------------------------------------Private Variables (Value-Types)
+    //Counts time betweem Black Hole collapsing and Game Over menu displaying
     private float expandTime;
+    //Checks if the player died because they overheated
+    private bool overheated;
+    //Checks if the player died because the Black Hole collapsed
     private bool swallowed;
 
-    //Calls the GameController.cs script
+    //-----------------------------------------------------------------------------Private Variables (Reference-Types)
+    //Calls the following scripts
     private GameController gameController;
-    //Calls the UIController.cs script
     private UIController uiController;
-    //private Wall wall;
 
-    //private CharacterController playerController;
-    //private Vector3 directionVector = new Vector3();
-    //private Vector3 previousRotationDirection = Vector3.forward;
 
     void Start()
     {
-        //Finds the Game Controller and updates its public variables
+        //Find these scripts and updates their public variables
         gameController = GameObject.Find("Game Controller").GetComponent<GameController>();
-        //Finds the UI Controller and updates its public variables
         uiController = GameObject.Find("UI Controller").GetComponent<UIController>();
-        //wall = GameObject.Find("Wall").GetComponent<Wall>();
 
         expandTime = 0.0f;
+        blackHoleCollapsed = false;
+        overheated = false;
         swallowed = false;
-
-        //playerController = gameObject.GetComponent<CharacterController>();
     }
+
 
     void Update()
     {
-        //If the player is alive, they can use the D and A keys to rotate around the Black Hole
+        //Checks if the player is alive
         if (!gameController.isDead)
-        {
-            if (Input.GetKey(KeyCode.D))
-            {
-                //if ((transform.rotation.y * Mathf.Rad2Deg) < wallRotation)
-                //{
-                    //Debug.Log(transform.rotation.y * Mathf.Rad2Deg);
-                    transform.Rotate(rotationAxis * Time.deltaTime * rotationSpeed);
-                //}
-            }
+            Movement();
 
-            if (Input.GetKey(KeyCode.A))
-            {
-                //if ((transform.rotation.y * Mathf.Rad2Deg) > -wallRotation)
-                //{
-                    //Debug.Log(transform.rotation.y * Mathf.Rad2Deg);
-                    transform.Rotate(-rotationAxis * Time.deltaTime * rotationSpeed);
-                //}
-            }
-
-            //The player can also use the Q key to warp 180 degrees around the Black Hole
-            if (Input.GetKeyDown(KeyCode.Q))
-            {
-                transform.Rotate(0, 180, 0);
-            }
-
-            if (Input.GetKeyDown(KeyCode.Backspace))
-            {
-                gameController.isDead = true;
-                gameController.blackHoleCollapsed = true;
-            }
-
-            /*float rotX = Input.GetAxis("Horizontal");
-            float rotZ = Input.GetAxis("Vertical");
-            directionVector = new Vector3(rotX, 0.0f, rotZ);
-
-            if (directionVector.magnitude < 0.1f)
-            {
-                directionVector = previousRotationDirection;
-            }
-
-            directionVector = directionVector.normalized;
-            previousRotationDirection = directionVector;
-
-            //LookRotation grabs a Vector3, and this line outputs a rotation
-            transform.rotation = Quaternion.LookRotation(directionVector);
-            //playerController.Move(rotationAxis * Time.deltaTime * rotationSpeed);*/
-        }
-
+        //When the player collects a weapon upgrade, a particle system is activated
         if (gameController.wideActivated && playUpgradePS)
-        {
-            getUpgradePS.SetActive(true);
-            playUpgradePS = false;
-        }
-
+            UpgradeParticles();
         if (gameController.rapidActivated && playUpgradePS)
-        {
-            getUpgradePS.SetActive(true);
-            playUpgradePS = false;
-        }
-
+            UpgradeParticles();
         if (gameController.largeActivated && playUpgradePS)
-        {
-            getUpgradePS.SetActive(true);
-            playUpgradePS = false;
-        }
+            UpgradeParticles();
 
         //When the player tries to fire their weapon, the overheat bar increases
-        if (Input.GetKey(KeyCode.Space) && !gameController.overheated)
-        {
-            uiController.overheatBar.value += overheatRate;
-
-            //If the overheat bar reaches the max value, the player overheats
-            if (uiController.overheatBar.value >= uiController.overheatBar.maxValue)
-            {
-                gameController.overheated = true;
-                gameController.isDead = true;
-
-                //Turn off the player character and play the explosion particles
-                guardian.SetActive(false);
-                explosion.SetActive(true);
-
-                Instantiate(playerExplodePS, guardian.transform.position + new Vector3(0, 1f, 0), guardian.transform.rotation);
-
-                playerExplode.Play(0);
-            }
-        }
+        if (Input.GetKey(KeyCode.Space) && !overheated)
+            Heat();
         //When the player is not firing their weapon, the overheat bar decreases
-        else if (!Input.GetKey(KeyCode.Space) && !gameController.overheated)
-            uiController.overheatBar.value -= coolRate;
+        else if (!Input.GetKey(KeyCode.Space) && !overheated)
+            Cool();
 
-        if (gameController.blackHoleCollapsed)
+        //Controls the timed sequence of the Black Hole collapsing
+        CollapseBlackHole();
+
+        //After the explosion particle system has been deactivated, the Game Over menu displays
+        if (explosion.activeSelf == false && gameController.isDead == true && overheated)
+            GameOver_Overheated();
+        //After the Black Hole animation has finished, the Game Over menu displays
+        if (expandTime >= 2.0f && gameController.isDead == true && swallowed == true)
+            GameOver_Swallowed();
+    }
+
+
+    private void Movement()
+    {
+        //The player uses the D and A keys to rotate around the Black Hole
+        if (Input.GetKey(KeyCode.D))
+            transform.Rotate(rotationAxis * Time.deltaTime * rotationSpeed);
+        if (Input.GetKey(KeyCode.A))
+            transform.Rotate(-rotationAxis * Time.deltaTime * rotationSpeed);
+
+        //The player uses the Q key to warp 180 degrees around the Black Hole
+        if (Input.GetKeyDown(KeyCode.Q))
+            transform.Rotate(0, 180, 0);
+    }
+
+
+    private void Heat()
+    {
+        //Increase the overheat bar
+        uiController.overheatBar.value += overheatRate;
+
+        //If the overheat bar reaches the max value, the player overheats
+        if (uiController.overheatBar.value >= uiController.overheatBar.maxValue)
         {
+            overheated = true;
+            gameController.isDead = true;
+
+            //Turn off the player character and play the explosion particles
+            guardian.SetActive(false);
+            explosion.SetActive(true);
+            Instantiate(playerExplodePS, guardian.transform.position + new Vector3(0, 1f, 0), guardian.transform.rotation);
+
+            //Play the sound effect
+            playerExplode.Play(0);
+        }
+    }
+
+
+    private void Cool()
+    {
+        uiController.overheatBar.value -= coolRate;
+    }
+
+
+    private void UpgradeParticles()
+    {
+        getUpgradePS.SetActive(true);
+        playUpgradePS = false;
+    }
+
+
+    private void CollapseBlackHole()
+    {
+        if (blackHoleCollapsed)
+        {
+            //Turn off the Black Hole's sphere collider
             blackHole.GetComponent<SphereCollider>().enabled = false;
-            
+            //Play the Black Hole's expanding animation
             blackHoleAnimator.SetBool("Black Hole Expand", true);
-
-            expandTime = 0.0f;
-
-            swallowed = true;
-
+            //Play the sound effect
             blackHoleCollapse.Play(0);
 
-            gameController.blackHoleCollapsed = false;
+            //Start the timer until Game Over menu is displayed
+            expandTime = 0.0f;
+            //Set this boolean to true to continue Game Over sequence
+            swallowed = true;
+
+            //Turn this boolean off so expandTime doesn't reset
+            blackHoleCollapsed = false;
         }
 
+        //Count time until Game Over
         expandTime += Time.deltaTime;
+    }
 
-        //After the explosion particle system has been deactivated, the game over screen displays
-        if (explosion.activeSelf == false && gameController.isDead == true && gameController.overheated)
-        {
-            if (swallowed)
-                uiController.gameOverReasonText.text = "You overheated and the Black Hole collapsed!";
-            else
-                uiController.gameOverReasonText.text = "You overheated!";
 
-            gameController.gameIsOver = true;
-        }
+    private void GameOver_Overheated()
+    {
+        //Set the reason that is shown on the Game Over screen
+        if (swallowed)
+            uiController.gameOverReasonText.text = "You overheated and the Black Hole collapsed!";
+        else
+            uiController.gameOverReasonText.text = "You overheated!";
 
-        if (expandTime >= 2.0f && gameController.isDead == true && swallowed == true)
-        {
-            if (gameController.overheated)
-                uiController.gameOverReasonText.text = "You overheated and the Black Hole collapsed!";
-            else
-                uiController.gameOverReasonText.text = "The Black Hole collapsed!";
+        //Display the Game Over screen
+        gameController.gameIsOver = true;
+    }
 
-            gameController.gameIsOver = true;
-        }
+
+    private void GameOver_Swallowed()
+    {
+        //Set the reason that is shown on the Game Over screen
+        if (overheated)
+            uiController.gameOverReasonText.text = "You overheated and the Black Hole collapsed!";
+        else
+            uiController.gameOverReasonText.text = "The Black Hole collapsed!";
+
+        //Display the Game Over screen
+        gameController.gameIsOver = true;
     }
 }
