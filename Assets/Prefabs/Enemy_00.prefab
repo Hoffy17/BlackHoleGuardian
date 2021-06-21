@@ -2606,7 +2606,7 @@ GameObject:
   - component: {fileID: 3962826188791906096}
   - component: {fileID: 3698431785056759845}
   m_Layer: 0
-  m_Name: EnemyType01_Homer
+  m_Name: Enemy_00
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2640,8 +2640,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemySpeed: 3.5
-  score: 0
-  scoreText: {fileID: 0}
+  enemyDiePS: {fileID: 1298960876858340407, guid: 2b65fbd240649f84fbabc225cfc32035, type: 3}
 --- !u!65 &3698431785056759845
 BoxCollider:
   m_ObjectHideFlags: 0

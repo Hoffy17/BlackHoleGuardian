@@ -17,6 +17,9 @@ public class Weapon : MonoBehaviour
     //A list of extra weapons that are activated by a weapon upgrade
     public List<GameObject> weaponsToActivate;
 
+    //The sound effect played when the player fires a projectile
+    public AudioSource shootSound;
+
     //The amount of time that is required before the player can again fire projectiles
     private float timePassed;
 
@@ -80,16 +83,17 @@ public class Weapon : MonoBehaviour
     //Instantiate projectiles at the player's location, in the direction the weapon is facing
     private void Shoot()
     {
-
         //If the player doesn't have the large weapon upgrade, fire regular projects
         if (!gameController.largeActivated)
         {
             Instantiate(projectileObject[0], transform.position, transform.rotation);
+            shootSound.Play(0);
         }
         //If the player has the large weapon upgrade, fire large projects
         else
         {
             Instantiate(projectileObject[1], transform.position, transform.rotation);
+            shootSound.Play(0);
         }
     }
 }

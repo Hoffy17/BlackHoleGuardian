@@ -9,15 +9,21 @@ public class WeaponUpgrade : MonoBehaviour
 
     //Calls the GameController.cs script
     private GameController gameController;
+    private MovementController movementController;
     //Calls the Spawner.cs script
     private Spawner spawner;
+
+    private AudioSource getUpgrade;
 
     void Start()
     {
         //Finds the Game Controller and updates its public variables
         gameController = GameObject.Find("Game Controller").GetComponent<GameController>();
+        movementController = GameObject.Find("Guardian Controller").GetComponent<MovementController>();
         //Finds the Spawners group and updates its public variables
         spawner = GameObject.Find("Spawners").GetComponent<Spawner>();
+
+        getUpgrade = GameObject.Find("GetUpgrade").GetComponent<AudioSource>();
     }
 
     //On every update, transform the weapon upgrade's position to move towards the origin, at a variable speed
@@ -37,19 +43,24 @@ public class WeaponUpgrade : MonoBehaviour
             {
                 //Set this boolean to true
                 gameController.wideActivated = true;
+                movementController.playUpgradePS = true;
             }
             //Or if the weapon upgrade is a Rapid type
             else if (gameObject.tag == "WeaponUpgrade_Rapid")
             {
                 //Set this boolean to true
                 gameController.rapidActivated = true;
+                movementController.playUpgradePS = true;
             }
             //Or if the weapon upgrade is a Large type
             else if (gameObject.tag == "WeaponUpgrade_Large")
             {
                 //Set this boolean to true
                 gameController.largeActivated = true;
+                movementController.playUpgradePS = true;
             }
+
+            getUpgrade.Play(0);
 
             //Destroy the weapon upgrade
             Destroy(gameObject);

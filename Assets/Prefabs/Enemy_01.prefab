@@ -2564,7 +2564,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 3d8da41b794d14e629e108a2e854638a, type: 2}
+  - {fileID: 2100000, guid: c2a78a5a4e7c94a03a241a350f0d7015, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -2606,7 +2606,7 @@ GameObject:
   - component: {fileID: 3962826188791906096}
   - component: {fileID: 3698431785056759845}
   m_Layer: 0
-  m_Name: Enemy_Type01_Homer_Variety03
+  m_Name: Enemy_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2639,7 +2639,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ebe61abc9372f463284dfcb84b923ce7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemySpeed: 7.5
+  enemySpeed: 5.5
+  enemyDiePS: {fileID: 1298960876858340407, guid: ed2a7ac1f365a4f43b0b675e40067aa8, type: 3}
 --- !u!65 &3698431785056759845
 BoxCollider:
   m_ObjectHideFlags: 0

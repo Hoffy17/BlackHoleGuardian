@@ -6,30 +6,32 @@ using UnityEngine.SceneManagement;
 public class GameController : MonoBehaviour
 {
     //The player's health before the game ends
-    public int health = 10;
+    public int health;
+
     //The player's score when enemies are destroyed
+    [HideInInspector]
     public int score = 0;
     //The player's high score
-    public int highScore;
-
     [HideInInspector]
+    public int highScore;
     //Checks whether the player can move
+    [HideInInspector]
     public bool isDead;
+    //Checks whether the game is over
+    [HideInInspector]
+    public bool gameIsOver;
     [HideInInspector]
     public bool overheated;
     [HideInInspector]
     public bool blackHoleCollapsed;
-    [HideInInspector]
-    //Checks whether the game is over
-    public bool gameIsOver;
-    [HideInInspector]
     //Checks whether the player has acquired the wide weapon upgrade
+    [HideInInspector]
     public bool wideActivated;
-    [HideInInspector]
     //Checks whether the player has acquired the rapid weapon upgrade
-    public bool rapidActivated;
     [HideInInspector]
+    public bool rapidActivated;
     //Checks whether the player has acquired the large weapon upgrade
+    [HideInInspector]
     public bool largeActivated;
 
     void Start()

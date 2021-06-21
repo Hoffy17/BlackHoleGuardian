@@ -12,12 +12,20 @@ public class Enemy : MonoBehaviour
     //Calls the UIController.cs script
     private UIController uiController;
 
+    private AudioSource enemyDied;
+    private AudioSource takeDamage;
+
+    public ParticleSystem enemyDiePS;
+
     void Start()
     {
         //Finds the Game Controller and updates its public variables
         gameController = GameObject.Find("Game Controller").GetComponent<GameController>();
         //Finds the UI Controller and updates its public variables
         uiController = GameObject.Find("UI Controller").GetComponent<UIController>();
+
+        enemyDied = GameObject.Find("EnemyDied").GetComponent<AudioSource>();
+        takeDamage = GameObject.Find("TakeDamage").GetComponent<AudioSource>();
     }
 
     //On every update, transform the enemy's position to move towards the origin, at a variable speed
@@ -37,6 +45,7 @@ public class Enemy : MonoBehaviour
             Destroy(gameObject);
             gameController.health -= 1;
             uiController.healthBar.value -= 1;
+            takeDamage.Play(0);
 
             //If health falls to zero, the player is dead
             if (gameController.health <= 0)
@@ -50,7 +59,9 @@ public class Enemy : MonoBehaviour
         if (other.tag == "PlayerProjectile")
         {
             Destroy(gameObject);
+            Instantiate(enemyDiePS, transform.position, transform.rotation);
             gameController.score += 100;
+            enemyDied.Play(0);
         }
     }
 }

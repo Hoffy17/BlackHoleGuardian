@@ -13,11 +13,16 @@ public class MovementController : MonoBehaviour
     //The rate at which the weapons cool down when the player is not trying to fire them
     public float coolRate;
     //public float wallRotation;
+    public bool playUpgradePS;
 
     public GameObject guardian;
     public GameObject blackHole;
     public GameObject explosion;
+    public GameObject getUpgradePS;
     public Animator blackHoleAnimator;
+    public AudioSource playerExplode;
+    public AudioSource blackHoleCollapse;
+    public ParticleSystem playerExplodePS;
 
     private float expandTime;
     private bool swallowed;
@@ -75,6 +80,12 @@ public class MovementController : MonoBehaviour
                 transform.Rotate(0, 180, 0);
             }
 
+            if (Input.GetKeyDown(KeyCode.Backspace))
+            {
+                gameController.isDead = true;
+                gameController.blackHoleCollapsed = true;
+            }
+
             /*float rotX = Input.GetAxis("Horizontal");
             float rotZ = Input.GetAxis("Vertical");
             directionVector = new Vector3(rotX, 0.0f, rotZ);
@@ -92,6 +103,24 @@ public class MovementController : MonoBehaviour
             //playerController.Move(rotationAxis * Time.deltaTime * rotationSpeed);*/
         }
 
+        if (gameController.wideActivated && playUpgradePS)
+        {
+            getUpgradePS.SetActive(true);
+            playUpgradePS = false;
+        }
+
+        if (gameController.rapidActivated && playUpgradePS)
+        {
+            getUpgradePS.SetActive(true);
+            playUpgradePS = false;
+        }
+
+        if (gameController.largeActivated && playUpgradePS)
+        {
+            getUpgradePS.SetActive(true);
+            playUpgradePS = false;
+        }
+
         //When the player tries to fire their weapon, the overheat bar increases
         if (Input.GetKey(KeyCode.Space) && !gameController.overheated)
         {
@@ -106,6 +135,10 @@ public class MovementController : MonoBehaviour
                 //Turn off the player character and play the explosion particles
                 guardian.SetActive(false);
                 explosion.SetActive(true);
+
+                Instantiate(playerExplodePS, guardian.transform.position + new Vector3(0, 1f, 0), guardian.transform.rotation);
+
+                playerExplode.Play(0);
             }
         }
         //When the player is not firing their weapon, the overheat bar decreases
@@ -114,11 +147,16 @@ public class MovementController : MonoBehaviour
 
         if (gameController.blackHoleCollapsed)
         {
+            blackHole.GetComponent<SphereCollider>().enabled = false;
+            
             blackHoleAnimator.SetBool("Black Hole Expand", true);
 
             expandTime = 0.0f;
 
             swallowed = true;
+
+            blackHoleCollapse.Play(0);
+
             gameController.blackHoleCollapsed = false;
         }
 
@@ -135,7 +173,7 @@ public class MovementController : MonoBehaviour
             gameController.gameIsOver = true;
         }
 
-        if (expandTime >= 0.54f && gameController.isDead == true && swallowed == true)
+        if (expandTime >= 2.0f && gameController.isDead == true && swallowed == true)
         {
             if (gameController.overheated)
                 uiController.gameOverReasonText.text = "You overheated and the Black Hole collapsed!";

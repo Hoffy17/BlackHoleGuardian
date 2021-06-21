@@ -33,6 +33,9 @@ public class UIController : MonoBehaviour
     public Button gameOverRetryButton;
     public Button gameOverQuitButton;
 
+    public AudioSource BGM;
+    public AudioSource selectSound;
+
     //Game objects to activate when the game is started
     public List<GameObject> gameObjects;
     //UI objects to deactivate when the game is started
@@ -110,11 +113,15 @@ public class UIController : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.Escape) && pauseMenu.activeSelf == false)
             {
                 pauseMenu.SetActive(true);
+                BGM.Pause();
+                selectSound.Play(0);
                 Time.timeScale = 0;
             }
             else if (Input.GetKeyDown(KeyCode.Escape) && pauseMenu.activeSelf == true)
             {
                 pauseMenu.SetActive(false);
+                BGM.UnPause();
+                selectSound.Play(0);
                 Time.timeScale = 1;
             }
         }
@@ -133,12 +140,14 @@ public class UIController : MonoBehaviour
         if (buttonPressed == mainMenuArcadeButton)
         {
             StartGame();
+            selectSound.Play(0);
         }
 
         if (buttonPressed == mainMenuControlsButton)
         {
             mainMenu.SetActive(false);
             controlsMenu.SetActive(true);
+            selectSound.Play(0);
         }
 
         if (buttonPressed == mainMenuExitGameButton)
@@ -150,6 +159,7 @@ public class UIController : MonoBehaviour
         {
             controlsMenu.SetActive(false);
             mainMenu.SetActive(true);
+            selectSound.Play(0);
         }
 
         if (buttonPressed == pauseRetryButton)
