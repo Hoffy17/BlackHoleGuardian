@@ -940,4 +940,3 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weaponUpgradeSpeed: 3
-  getUpgradePS: {fileID: 1298960876858340407, guid: f4836f4259164a5499b60442fa0fdb33, type: 3}

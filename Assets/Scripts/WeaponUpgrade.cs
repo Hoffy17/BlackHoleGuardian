@@ -81,10 +81,10 @@ public class WeaponUpgrade : MonoBehaviour
 
     private void DestroyUpgrade()
     {
-        //Destroy the weapon upgrade
-        Destroy(gameObject);
-
         //When a weapon upgrade is destroyed, set this boolean to false
         spawner.weaponUpgradeInScene = false;
+
+        //Destroy the weapon upgrade
+        Destroy(gameObject);
     }
 }

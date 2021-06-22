@@ -129,6 +129,7 @@ public class Spawner : MonoBehaviour
 
             //When a weapon upgrade is spawned, set this boolean to true
             weaponUpgradeInScene = true;
+
         }
         //If none of the above conditions are met, the slowest enemy type is spawned
         else

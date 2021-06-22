@@ -13,8 +13,8 @@ public class UIController : MonoBehaviour
     public Button mainMenuControlsButton;
     public Button mainMenuExitGameButton;
     //-------------------------------------------------------------How To Play UI
-    public GameObject controlsMenu;
-    public Button controlsMenuButton;
+    public GameObject howToPlayMenu;
+    public Button howToPlayMenuButton;
     //-------------------------------------------------------------Arcade UI
     //The health bar slider
     public Slider healthBar;
@@ -89,6 +89,8 @@ public class UIController : MonoBehaviour
                 playerSelectedRetry = false;
                 Save.SetBool("PlayerSelectedRetry", playerSelectedRetry);
                 StartGame();
+
+                selectSound.Play(0);
             }
         }
     }
@@ -110,7 +112,7 @@ public class UIController : MonoBehaviour
             Time.timeScale = 0;
         }
         //If the player is not dead, and the Main and Control menus are not active
-        else if (!gameController.gameIsOver && mainMenu.activeSelf == false && controlsMenu.activeSelf == false)
+        else if (!gameController.gameIsOver && mainMenu.activeSelf == false && howToPlayMenu.activeSelf == false)
         {
             //The player can press Escape to turn the Pause menu on and off
             //This also freezes and unfreezes game time
@@ -137,7 +139,7 @@ public class UIController : MonoBehaviour
         mainMenuArcadeButton.onClick.AddListener(() => ButtonEvent(mainMenuArcadeButton));
         mainMenuControlsButton.onClick.AddListener(() => ButtonEvent(mainMenuControlsButton));
         mainMenuExitGameButton.onClick.AddListener(() => ButtonEvent(mainMenuExitGameButton));
-        controlsMenuButton.onClick.AddListener(() => ButtonEvent(controlsMenuButton));
+        howToPlayMenuButton.onClick.AddListener(() => ButtonEvent(howToPlayMenuButton));
         pauseRetryButton.onClick.AddListener(() => ButtonEvent(pauseRetryButton));
         pauseQuitButton.onClick.AddListener(() => ButtonEvent(pauseQuitButton));
         gameOverRetryButton.onClick.AddListener(() => ButtonEvent(gameOverRetryButton));
@@ -157,16 +159,16 @@ public class UIController : MonoBehaviour
         if (buttonPressed == mainMenuControlsButton)
         {
             mainMenu.SetActive(false);
-            controlsMenu.SetActive(true);
+            howToPlayMenu.SetActive(true);
             selectSound.Play(0);
         }
 
         if (buttonPressed == mainMenuExitGameButton)
             Application.Quit();
 
-        if (buttonPressed == controlsMenuButton)
+        if (buttonPressed == howToPlayMenuButton)
         {
-            controlsMenu.SetActive(false);
+            howToPlayMenu.SetActive(false);
             mainMenu.SetActive(true);
             selectSound.Play(0);
         }

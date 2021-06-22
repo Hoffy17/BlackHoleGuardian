@@ -33,6 +33,8 @@ public class MovementController : MonoBehaviour
     public GameObject getUpgradePS;
     //Animator controlling the Black Hole collapsing
     public Animator blackHoleAnimator;
+    //Sound effect when the player warps
+    public AudioSource warp;
     //Sound effect when the player overheats
     public AudioSource playerExplode;
     //Sound effect when the Black Hole collapses
@@ -115,6 +117,9 @@ public class MovementController : MonoBehaviour
         {
             transform.Rotate(0, 180, 0);
             warpPoint.SetActive(false);
+
+            //Play the sound effect
+            warp.Play(0);
         }
     }
 
