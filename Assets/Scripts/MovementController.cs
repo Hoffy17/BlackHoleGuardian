@@ -122,7 +122,8 @@ public class MovementController : MonoBehaviour
     private void Heat()
     {
         //Increase the overheat bar
-        uiController.overheatBar.value += overheatRate;
+        gameController.overheat += overheatRate * Time.deltaTime;
+        uiController.overheatBar.value = gameController.overheat;
 
         //If the overheat bar reaches the max value, the player overheats
         if (uiController.overheatBar.value >= uiController.overheatBar.maxValue)
@@ -143,7 +144,13 @@ public class MovementController : MonoBehaviour
 
     private void Cool()
     {
-        uiController.overheatBar.value -= coolRate;
+        gameController.overheat -= coolRate * Time.deltaTime;
+
+        //Ensure the overheat meter doesn't fall below zero
+        if (gameController.overheat <= 0)
+            gameController.overheat = 0;
+
+        uiController.overheatBar.value = gameController.overheat;
     }
 
 

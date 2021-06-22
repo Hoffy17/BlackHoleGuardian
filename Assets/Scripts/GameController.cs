@@ -14,6 +14,9 @@ public class GameController : MonoBehaviour
     //The player's high score
     [HideInInspector]
     public int highScore;
+    //The value of the overheat meter
+    [HideInInspector]
+    public float overheat;
     //Checks whether the player can move
     [HideInInspector]
     public bool isDead;
