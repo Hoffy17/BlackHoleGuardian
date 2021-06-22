@@ -24,6 +24,8 @@ public class MovementController : MonoBehaviour
     //Game Objects in the scene
     public GameObject guardian;
     public GameObject blackHole;
+    //Toggles on and off when the player warps
+    public GameObject warpPoint;
     //Particles when the player overheats
     public GameObject explosion;
     public ParticleSystem playerExplodePS;
@@ -105,8 +107,15 @@ public class MovementController : MonoBehaviour
             transform.Rotate(-rotationAxis * Time.deltaTime * rotationSpeed);
 
         //The player uses the Q key to warp 180 degrees around the Black Hole
+        //On key down, a "ghost" appears displaying where the player will warp to
         if (Input.GetKeyDown(KeyCode.Q))
+            warpPoint.SetActive(true);
+        //On key up, the player warps and the "ghost" disappears
+        if (Input.GetKeyUp(KeyCode.Q))
+        {
             transform.Rotate(0, 180, 0);
+            warpPoint.SetActive(false);
+        }
     }
 
 

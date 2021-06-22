@@ -59,19 +59,22 @@ public class UIController : MonoBehaviour
 
     void Start()
     {
-        //Returns the speed of the game to normal after reloading the scene
+        //Boot up the main menu
+        mainMenu.SetActive(true);
+
+        //Return the speed of the game to normal after reloading the scene
         Time.timeScale = 1;
 
-        //Defines the active scene as the main scene
+        //Define the active scene as the main scene
         main = SceneManager.GetActiveScene();
 
-        //Finds the Game Controller and updates its public variables
+        //Find the Game Controller and update its public variables
         gameController = GameObject.Find("Game Controller").GetComponent<GameController>();
 
-        //Registers events for when each UI button is clicked
+        //Register events for when each UI button is clicked
         RegisterButtons();
 
-        //Checks for a saved boolean variable and creates it if it does not yet exist
+        //Check for a saved boolean variable and create it if it does not yet exist
         if (Save.Contains("PlayerSelectedRetry") == false)
             Save.SetBool("PlayerSelectedRetry", playerSelectedRetry);
         //If the boolean exists
@@ -131,19 +134,19 @@ public class UIController : MonoBehaviour
 
     private void RegisterButtons()
     {
-        mainMenuArcadeButton.onClick.AddListener(() => buttonCallBack(mainMenuArcadeButton));
-        mainMenuControlsButton.onClick.AddListener(() => buttonCallBack(mainMenuControlsButton));
-        mainMenuExitGameButton.onClick.AddListener(() => buttonCallBack(mainMenuExitGameButton));
-        controlsMenuButton.onClick.AddListener(() => buttonCallBack(controlsMenuButton));
-        pauseRetryButton.onClick.AddListener(() => buttonCallBack(pauseRetryButton));
-        pauseQuitButton.onClick.AddListener(() => buttonCallBack(pauseQuitButton));
-        gameOverRetryButton.onClick.AddListener(() => buttonCallBack(gameOverRetryButton));
-        gameOverQuitButton.onClick.AddListener(() => buttonCallBack(gameOverQuitButton));
+        mainMenuArcadeButton.onClick.AddListener(() => ButtonEvent(mainMenuArcadeButton));
+        mainMenuControlsButton.onClick.AddListener(() => ButtonEvent(mainMenuControlsButton));
+        mainMenuExitGameButton.onClick.AddListener(() => ButtonEvent(mainMenuExitGameButton));
+        controlsMenuButton.onClick.AddListener(() => ButtonEvent(controlsMenuButton));
+        pauseRetryButton.onClick.AddListener(() => ButtonEvent(pauseRetryButton));
+        pauseQuitButton.onClick.AddListener(() => ButtonEvent(pauseQuitButton));
+        gameOverRetryButton.onClick.AddListener(() => ButtonEvent(gameOverRetryButton));
+        gameOverQuitButton.onClick.AddListener(() => ButtonEvent(gameOverQuitButton));
     }
 
 
     //Controls what happens when each button is pressed
-    void buttonCallBack(Button buttonPressed)
+    private void ButtonEvent(Button buttonPressed)
     {
         if (buttonPressed == mainMenuArcadeButton)
         {
