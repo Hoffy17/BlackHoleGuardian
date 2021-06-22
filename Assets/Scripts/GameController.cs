@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class GameController : MonoBehaviour
 {
@@ -26,6 +25,7 @@ public class GameController : MonoBehaviour
     //Checks whether the player has acquired the wide weapon upgrade
     [HideInInspector]
     public bool wideActivated;
+
     //Checks whether the player has acquired the rapid weapon upgrade
     [HideInInspector]
     public bool rapidActivated;
