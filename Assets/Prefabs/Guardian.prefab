@@ -389,7 +389,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: af3fcf36fb36140f4b9a3fce9904ba38, type: 2}
+  - {fileID: 2100000, guid: c0a8b32386d6de54d9aef9d0a06a3ba5, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -761,7 +761,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: af3fcf36fb36140f4b9a3fce9904ba38, type: 2}
+  - {fileID: 2100000, guid: c0a8b32386d6de54d9aef9d0a06a3ba5, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -848,13 +848,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 82b54a7e6fd244fdab13d96f9437785c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  canShoot: 0
-  refireRate: 0.05
+  refireRate: 0.035
   refireRateRapid: 0.01
+  canShoot: 0
   projectileObject:
   - {fileID: 5187235416735716252, guid: e5457ed801086416c8c84158310d8f50, type: 3}
   - {fileID: 5187235416735716252, guid: 403611b6707f04e0794e6cac7a95f595, type: 3}
   weaponsToActivate: []
+  shootSound: {fileID: 0}
 --- !u!1 &4280795185793553704
 GameObject:
   m_ObjectHideFlags: 0
@@ -898,15 +899,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 82b54a7e6fd244fdab13d96f9437785c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  canShoot: 0
-  refireRate: 0.05
+  refireRate: 0.035
   refireRateRapid: 0.01
+  canShoot: 0
   projectileObject:
   - {fileID: 5187235416735716252, guid: e5457ed801086416c8c84158310d8f50, type: 3}
   - {fileID: 5187235416735716252, guid: 403611b6707f04e0794e6cac7a95f595, type: 3}
   weaponsToActivate:
   - {fileID: 5198456258201826376}
   - {fileID: 3123584977455320331}
+  shootSound: {fileID: 0}
 --- !u!1 &5198456258201826376
 GameObject:
   m_ObjectHideFlags: 0
@@ -950,13 +952,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 82b54a7e6fd244fdab13d96f9437785c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  canShoot: 0
-  refireRate: 0.05
+  refireRate: 0.035
   refireRateRapid: 0.01
+  canShoot: 0
   projectileObject:
   - {fileID: 5187235416735716252, guid: e5457ed801086416c8c84158310d8f50, type: 3}
   - {fileID: 5187235416735716252, guid: 403611b6707f04e0794e6cac7a95f595, type: 3}
   weaponsToActivate: []
+  shootSound: {fileID: 0}
 --- !u!1 &5562283021375827886
 GameObject:
   m_ObjectHideFlags: 0
@@ -1017,7 +1020,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: af3fcf36fb36140f4b9a3fce9904ba38, type: 2}
+  - {fileID: 2100000, guid: c0a8b32386d6de54d9aef9d0a06a3ba5, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1442,7 +1445,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: af3fcf36fb36140f4b9a3fce9904ba38, type: 2}
+  - {fileID: 2100000, guid: c0a8b32386d6de54d9aef9d0a06a3ba5, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1546,7 +1549,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: af3fcf36fb36140f4b9a3fce9904ba38, type: 2}
+  - {fileID: 2100000, guid: c0a8b32386d6de54d9aef9d0a06a3ba5, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
