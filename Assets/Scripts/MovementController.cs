@@ -133,21 +133,7 @@ public class MovementController : MonoBehaviour
         gameController.overheat += overheatRate * Time.deltaTime;
         uiController.overheatBar.value = gameController.overheat;
 
-        overheatColor.g -= uiController.overheatBar.value / uiController.overheatBar.maxValue;
-        overheatColor.b -= uiController.overheatBar.value / uiController.overheatBar.maxValue;
-
-        float red = Mathf.Clamp(overheatColor.r, 0, 1);
-        float green = Mathf.Clamp(overheatColor.g, 0, 1);
-        float blue = Mathf.Clamp(overheatColor.b, 0, 1);
-
-        overheatColor = new Color(red, green, blue);
-
-        Debug.Log(overheatColor);
-
-        for (int i = 0; i < guardianParts.Count; i++)
-        {
-            guardianParts[i].GetComponent<MeshRenderer>().material.SetColor("_BaseColor", overheatColor);
-        }
+        ChangeColour();
 
         //If the overheat bar reaches the max value, the player overheats
         if (uiController.overheatBar.value >= uiController.overheatBar.maxValue)
@@ -170,8 +156,21 @@ public class MovementController : MonoBehaviour
     {
         gameController.overheat -= coolRate * Time.deltaTime;
 
-        overheatColor.g += uiController.overheatBar.value / uiController.overheatBar.maxValue;
-        overheatColor.b += uiController.overheatBar.value / uiController.overheatBar.maxValue;
+        ChangeColour();
+
+        //Ensure the overheat meter doesn't fall below zero
+        if (gameController.overheat <= 0)
+            gameController.overheat = 0;
+
+        uiController.overheatBar.value = gameController.overheat;
+    }
+
+
+    //As the overheat meter increases, the Guardian becomes more and more red
+    private void ChangeColour()
+    {
+        overheatColor.g = 1 - (uiController.overheatBar.value / uiController.overheatBar.maxValue);
+        overheatColor.b = 1 - (uiController.overheatBar.value / uiController.overheatBar.maxValue);
 
         float red = Mathf.Clamp(overheatColor.r, 0, 1);
         float green = Mathf.Clamp(overheatColor.g, 0, 1);
@@ -179,18 +178,10 @@ public class MovementController : MonoBehaviour
 
         overheatColor = new Color(red, green, blue);
 
-        Debug.Log(overheatColor);
-
         for (int i = 0; i < guardianParts.Count; i++)
         {
             guardianParts[i].GetComponent<MeshRenderer>().material.SetColor("_BaseColor", overheatColor);
         }
-
-        //Ensure the overheat meter doesn't fall below zero
-        if (gameController.overheat <= 0)
-            gameController.overheat = 0;
-
-        uiController.overheatBar.value = gameController.overheat;
     }
 
 

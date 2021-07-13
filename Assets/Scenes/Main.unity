@@ -383,7 +383,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh17306
+  m_Name: pb_Mesh17556
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -702,7 +702,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh17008
+  m_Name: pb_Mesh17258
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -2287,7 +2287,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh17080
+  m_Name: pb_Mesh17330
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -2451,7 +2451,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-271664
+  m_Name: pb_Mesh17418
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -14140,6 +14140,18 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 568614240}
+    - target: {fileID: 1139061898558111822, guid: e58bee9ef2162450488eb06ed52f2954, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: af3fcf36fb36140f4b9a3fce9904ba38, type: 2}
+    - target: {fileID: 1449914358086446143, guid: e58bee9ef2162450488eb06ed52f2954, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: af3fcf36fb36140f4b9a3fce9904ba38, type: 2}
+    - target: {fileID: 1716617182486807334, guid: e58bee9ef2162450488eb06ed52f2954, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: af3fcf36fb36140f4b9a3fce9904ba38, type: 2}
     - target: {fileID: 2088831337570711108, guid: e58bee9ef2162450488eb06ed52f2954, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -14220,6 +14232,10 @@ PrefabInstance:
       propertyPath: shootSound
       value: 
       objectReference: {fileID: 560107485}
+    - target: {fileID: 8359824909846642295, guid: e58bee9ef2162450488eb06ed52f2954, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: af3fcf36fb36140f4b9a3fce9904ba38, type: 2}
     - target: {fileID: 8409771676136351317, guid: e58bee9ef2162450488eb06ed52f2954, type: 3}
       propertyPath: m_Name
       value: Guardian
@@ -14228,6 +14244,10 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 86114359}
+    - target: {fileID: 8908216728718515566, guid: e58bee9ef2162450488eb06ed52f2954, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: af3fcf36fb36140f4b9a3fce9904ba38, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e58bee9ef2162450488eb06ed52f2954, type: 3}
 --- !u!1001 &2172648996933530267
