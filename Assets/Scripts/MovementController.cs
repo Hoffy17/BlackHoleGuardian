@@ -21,6 +21,8 @@ public class MovementController : MonoBehaviour
     public bool blackHoleCollapsed;
     //The colour of the player as they overheat
     public Color overheatColor;
+    //The values that trigger the different stages of the overheat alarm
+    public int overheatAlarmTrigger;
 
     //-----------------------------------------------------------------------------Public Variables (Reference-Types)
     //Game Objects in the scene
@@ -36,12 +38,13 @@ public class MovementController : MonoBehaviour
     public GameObject getUpgradePS;
     //Animator controlling the Black Hole collapsing
     public Animator blackHoleAnimator;
-    //Sound effect when the player warps
+    //Sound effects
+    public AudioSource move;
     public AudioSource warp;
-    //Sound effect when the player overheats
     public AudioSource playerExplode;
-    //Sound effect when the Black Hole collapses
     public AudioSource blackHoleCollapse;
+    //Alarm sound for the overheat meter
+    public GameObject overheatAlarm;
 
     //-----------------------------------------------------------------------------Private Variables (Value-Types)
     //Counts time betweem Black Hole collapsing and Game Over menu displaying
@@ -55,7 +58,6 @@ public class MovementController : MonoBehaviour
     //Calls the following scripts
     private GameController gameController;
     private UIController uiController;
-
 
     void Start()
     {
@@ -91,6 +93,12 @@ public class MovementController : MonoBehaviour
         else if (!Input.GetKey(KeyCode.Space) && !overheated)
             Cool();
 
+        //If the overheat meter exceeds the trigger, the alarm plays
+        if (gameController.overheat < overheatAlarmTrigger)
+            overheatAlarm.SetActive(false);
+        else if (gameController.overheat >= overheatAlarmTrigger && gameController.overheat < uiController.overheatBar.maxValue)
+            overheatAlarm.SetActive(true);
+
         //Controls the timed sequence of the Black Hole collapsing
         CollapseBlackHole();
 
@@ -107,9 +115,15 @@ public class MovementController : MonoBehaviour
     {
         //The player uses the D and A keys to rotate around the Black Hole
         if (Input.GetKey(KeyCode.D))
+        {
             transform.Rotate(rotationAxis * Time.deltaTime * rotationSpeed);
+            move.Play();
+        }
         if (Input.GetKey(KeyCode.A))
+        {
             transform.Rotate(-rotationAxis * Time.deltaTime * rotationSpeed);
+            move.Play();
+        }
 
         //The player uses the Q key to warp 180 degrees around the Black Hole
         //On key down, a "ghost" appears displaying where the player will warp to
@@ -122,7 +136,7 @@ public class MovementController : MonoBehaviour
             warpPoint.SetActive(false);
 
             //Play the sound effect
-            warp.Play(0);
+            warp.Play();
         }
     }
 
@@ -147,7 +161,8 @@ public class MovementController : MonoBehaviour
             Instantiate(playerExplodePS, guardian.transform.position + new Vector3(0, 1f, 0), guardian.transform.rotation);
 
             //Play the sound effect
-            playerExplode.Play(0);
+            overheatAlarm.SetActive(false);
+            playerExplode.Play();
         }
     }
 
@@ -201,7 +216,7 @@ public class MovementController : MonoBehaviour
             //Play the Black Hole's expanding animation
             blackHoleAnimator.SetBool("Black Hole Expand", true);
             //Play the sound effect
-            blackHoleCollapse.Play(0);
+            blackHoleCollapse.Play();
 
             //Start the timer until Game Over menu is displayed
             expandTime = 0.0f;

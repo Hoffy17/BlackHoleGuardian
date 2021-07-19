@@ -67,13 +67,15 @@ public class Enemy : MonoBehaviour
         uiController.healthBar.value -= 1;
 
         //Play sound effect
-        takeDamage.Play(0);
+        takeDamage.Play();
 
         //If health falls to zero, the player is dead and the Black Hole starts to collapse
         if (gameController.health <= 0)
         {
             gameController.isDead = true;
             movementController.blackHoleCollapsed = true;
+
+            movementController.overheatAlarm.SetActive(false);
         }
     }
 
@@ -88,6 +90,6 @@ public class Enemy : MonoBehaviour
         gameController.score += 100;
 
         //Play sound effect
-        enemyDied.Play(0);
+        enemyDied.Play();
     }
 }

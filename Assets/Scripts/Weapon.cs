@@ -79,13 +79,13 @@ public class Weapon : MonoBehaviour
         if (!gameController.largeActivated)
         {
             Instantiate(projectileObject[0], transform.position, transform.rotation);
-            shootSound.Play(0);
+            shootSound.Play();
         }
         //If the player has the large weapon upgrade, fire large projectiles
         else
         {
             Instantiate(projectileObject[1], transform.position, transform.rotation);
-            shootSound.Play(0);
+            shootSound.Play();
         }
 
         //Create a delay between shots fired

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Audio;
 using UnityEngine.SceneManagement;
 
 public class UIController : MonoBehaviour
@@ -10,11 +11,15 @@ public class UIController : MonoBehaviour
     //-------------------------------------------------------------Main Menu UI
     public GameObject mainMenu;
     public Button mainMenuArcadeButton;
-    public Button mainMenuControlsButton;
+    public Button mainMenuHowToPlayButton;
+    public Button mainMenuOptionsButton;
     public Button mainMenuExitGameButton;
     //-------------------------------------------------------------How To Play UI
     public GameObject howToPlayMenu;
     public Button howToPlayMenuButton;
+    //-------------------------------------------------------------Options UI
+    public GameObject optionsMemu;
+    public Button optionsMenuButton;
     //-------------------------------------------------------------Arcade UI
     //The health bar slider
     public Slider healthBar;
@@ -41,56 +46,67 @@ public class UIController : MonoBehaviour
     public List<GameObject> gameObjects;
     //UI objects to deactivate when the game is started
     public List<GameObject> menuObjects;
-    //The background music
-    public AudioSource BGM;
-    //Menu selection sound effect
+    //Sound effects
     public AudioSource selectSound;
+    public AudioSource overheatAlarm;
 
     //-----------------------------------------------------------------------------Private Variables (Value-Types)
     //The scene for the project
     private Scene main;
-    //Checks if the player selected the retry button when the scene is reloaded
-    private bool playerSelectedRetry = false;
 
     //-----------------------------------------------------------------------------Private Variables (Reference-Types)
-    //Calls the GameController.cs script
+    //Calls the following scripts
     private GameController gameController;
+    //Checks the button that the player selected when the scene is reloaded
+    private string playerRetryOrQuit = "";
+    [SerializeField]
+    private AudioMixer audioMixer;
+    [SerializeField]
+    private string musicFreqCutoffParameter;
 
 
     void Start()
     {
+        //Find these scripts and updates their public variables
+        gameController = GameObject.Find("Game Controller").GetComponent<GameController>();
+
         //Boot up the main menu
         mainMenu.SetActive(true);
 
         //Return the speed of the game to normal after reloading the scene
         Time.timeScale = 1;
+        audioMixer.SetFloat(musicFreqCutoffParameter, 22000.0f);
 
         //Define the active scene as the main scene
         main = SceneManager.GetActiveScene();
 
-        //Find the Game Controller and update its public variables
-        gameController = GameObject.Find("Game Controller").GetComponent<GameController>();
-
         //Register events for when each UI button is clicked
         RegisterButtons();
 
-        //Check for a saved boolean variable and create it if it does not yet exist
-        if (Save.Contains("PlayerSelectedRetry") == false)
-            Save.SetBool("PlayerSelectedRetry", playerSelectedRetry);
-        //If the boolean exists
+        //Check for a saved string variable and create it if it does not yet exist
+        if (Save.Contains("PlayerRetryOrQuit") == false)
+            Save.SetString("PlayerRetryOrQuit", playerRetryOrQuit);
+        //If the string exists
         else
         {
-            //Check the value of the boolean
-            playerSelectedRetry = Save.GetBool("PlayerSelectedRetry");
+            //Check the string
+            playerRetryOrQuit = Save.GetString("PlayerRetryOrQuit");
 
-            //If its true, the player has selected retry and the application loads Arcade mode
-            if (playerSelectedRetry)
+            //Depending on the selection, start the game
+            if (playerRetryOrQuit == "Retry")
             {
-                playerSelectedRetry = false;
-                Save.SetBool("PlayerSelectedRetry", playerSelectedRetry);
+                playerRetryOrQuit = "";
+                Save.SetString("PlayerRetryOrQuit", playerRetryOrQuit);
                 StartGame();
 
-                selectSound.Play(0);
+                selectSound.Play();
+            }
+            else if (playerRetryOrQuit == "Quit")
+            {
+                playerRetryOrQuit = "";
+                Save.SetString("PlayerRetryOrQuit", playerRetryOrQuit);
+
+                selectSound.Play();
             }
         }
     }
@@ -111,23 +127,26 @@ public class UIController : MonoBehaviour
             gameOverMenu.SetActive(true);
             Time.timeScale = 0;
         }
-        //If the player is not dead, and the Main and Control menus are not active
-        else if (!gameController.gameIsOver && mainMenu.activeSelf == false && howToPlayMenu.activeSelf == false)
+
+        //If the player is not dead, and any of the menus are not active
+        if (!gameController.isDead && mainMenu.activeSelf == false && howToPlayMenu.activeSelf == false && optionsMemu.activeSelf == false)
         {
             //The player can press Escape to turn the Pause menu on and off
             //This also freezes and unfreezes game time
             if (Input.GetKeyDown(KeyCode.Escape) && pauseMenu.activeSelf == false)
             {
                 pauseMenu.SetActive(true);
-                BGM.Pause();
-                selectSound.Play(0);
+                audioMixer.SetFloat(musicFreqCutoffParameter, 196.0f);
+                selectSound.Play();
+                overheatAlarm.Pause();
                 Time.timeScale = 0;
             }
             else if (Input.GetKeyDown(KeyCode.Escape) && pauseMenu.activeSelf == true)
             {
                 pauseMenu.SetActive(false);
-                BGM.UnPause();
-                selectSound.Play(0);
+                audioMixer.SetFloat(musicFreqCutoffParameter, 22000.0f);
+                selectSound.Play();
+                overheatAlarm.UnPause();
                 Time.timeScale = 1;
             }
         }
@@ -137,9 +156,11 @@ public class UIController : MonoBehaviour
     private void RegisterButtons()
     {
         mainMenuArcadeButton.onClick.AddListener(() => ButtonEvent(mainMenuArcadeButton));
-        mainMenuControlsButton.onClick.AddListener(() => ButtonEvent(mainMenuControlsButton));
+        mainMenuHowToPlayButton.onClick.AddListener(() => ButtonEvent(mainMenuHowToPlayButton));
+        mainMenuOptionsButton.onClick.AddListener(() => ButtonEvent(mainMenuOptionsButton));
         mainMenuExitGameButton.onClick.AddListener(() => ButtonEvent(mainMenuExitGameButton));
         howToPlayMenuButton.onClick.AddListener(() => ButtonEvent(howToPlayMenuButton));
+        optionsMenuButton.onClick.AddListener(() => ButtonEvent(optionsMenuButton));
         pauseRetryButton.onClick.AddListener(() => ButtonEvent(pauseRetryButton));
         pauseQuitButton.onClick.AddListener(() => ButtonEvent(pauseQuitButton));
         gameOverRetryButton.onClick.AddListener(() => ButtonEvent(gameOverRetryButton));
@@ -153,14 +174,21 @@ public class UIController : MonoBehaviour
         if (buttonPressed == mainMenuArcadeButton)
         {
             StartGame();
-            selectSound.Play(0);
+            selectSound.Play();
         }
 
-        if (buttonPressed == mainMenuControlsButton)
+        if (buttonPressed == mainMenuHowToPlayButton)
         {
             mainMenu.SetActive(false);
             howToPlayMenu.SetActive(true);
-            selectSound.Play(0);
+            selectSound.Play();
+        }
+
+        if (buttonPressed == mainMenuOptionsButton)
+        {
+            mainMenu.SetActive(false);
+            optionsMemu.SetActive(true);
+            selectSound.Play();
         }
 
         if (buttonPressed == mainMenuExitGameButton)
@@ -170,20 +198,27 @@ public class UIController : MonoBehaviour
         {
             howToPlayMenu.SetActive(false);
             mainMenu.SetActive(true);
-            selectSound.Play(0);
+            selectSound.Play();
+        }
+
+        if (buttonPressed == optionsMenuButton)
+        {
+            optionsMemu.SetActive(false);
+            mainMenu.SetActive(true);
+            selectSound.Play();
         }
 
         if (buttonPressed == pauseRetryButton)
             Retry();
 
         if (buttonPressed == pauseQuitButton)
-            SceneManager.LoadScene(main.name);
+            Quit();
 
         if (buttonPressed == gameOverRetryButton)
             Retry();
 
         if (buttonPressed == gameOverQuitButton)
-            SceneManager.LoadScene(main.name);
+            Quit();
     }
 
 
@@ -200,8 +235,17 @@ public class UIController : MonoBehaviour
 
     private void Retry()
     {
-        playerSelectedRetry = true;
-        Save.SetBool("PlayerSelectedRetry", playerSelectedRetry);
+        playerRetryOrQuit = "Retry";
+        Save.SetString("PlayerRetryOrQuit", playerRetryOrQuit);
+
+        SceneManager.LoadScene(main.name);
+    }
+
+
+    private void Quit()
+    {
+        playerRetryOrQuit = "Quit";
+        Save.SetString("PlayerRetryOrQuit", playerRetryOrQuit);
 
         SceneManager.LoadScene(main.name);
     }

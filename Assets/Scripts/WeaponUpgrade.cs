@@ -73,7 +73,7 @@ public class WeaponUpgrade : MonoBehaviour
         }
 
         //Play sound effect
-        getUpgrade.Play(0);
+        getUpgrade.Play();
 
         DestroyUpgrade();
     }

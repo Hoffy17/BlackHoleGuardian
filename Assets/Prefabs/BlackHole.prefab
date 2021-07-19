@@ -5890,7 +5890,7 @@ GameObject:
   - component: {fileID: 7058684347553083966}
   - component: {fileID: 7058684347553083955}
   m_Layer: 0
-  m_Name: Black Hole
+  m_Name: BlackHole
   m_TagString: BlackHole
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
