@@ -158,7 +158,7 @@ public class MovementController : MonoBehaviour
             explosion.SetActive(true);
             Instantiate(playerExplodePS, guardian.transform.position + new Vector3(0, 1f, 0), guardian.transform.rotation);
 
-            //Play the sound effect
+            //Play the sound effect and stop the alarm
             overheatAlarm.SetActive(false);
             sfxPlayerExplode.Play();
         }
@@ -213,7 +213,7 @@ public class MovementController : MonoBehaviour
             blackHole.GetComponent<SphereCollider>().enabled = false;
             //Play the Black Hole's expanding animation
             blackHoleAnimator.SetBool("Black Hole Expand", true);
-            //Play the sound effect
+            //Play the sound effect and stop the alarm
             sfxBlackholeCollapse.Play();
 
             //Start the timer until Game Over menu is displayed
@@ -224,6 +224,10 @@ public class MovementController : MonoBehaviour
             //Turn this boolean off so expandTime doesn't reset
             blackHoleCollapsed = false;
         }
+
+        //If the alarm is playing when the Black Hole starts to collapse, stop the alarm
+        if (swallowed)
+            overheatAlarm.SetActive(false);
 
         //Count time until Game Over
         expandTime += Time.deltaTime;

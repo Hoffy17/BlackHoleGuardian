@@ -132,9 +132,6 @@ public class VolumeControl : MonoBehaviour
         musicVolumeSlider.value = PlayerPrefs.GetFloat(musicVolumeParameter, musicVolumeSlider.value);
         sFXVolumeSlider.value = PlayerPrefs.GetFloat(sFXVolumeParameter, sFXVolumeSlider.value);
         overheatAlarmVolume = PlayerPrefs.GetFloat(overheatAlarmVolumeParameter, overheatAlarmVolume);
-
-        if (overheatAlarmVolume == -80.0f)
-            overheatMuteToggle.isOn = false;
     }
 
     void Update()
@@ -143,12 +140,13 @@ public class VolumeControl : MonoBehaviour
         if (musicVolumeSlider.value == 0f)
             musicMuteToggle.isOn = false;
 
+        //Check if the player hasn't opted to turn off the overheat alarm
+        //and turn it off if the SFX volume slider is set to zero
         if (sFXVolumeSlider.value == 0f)
         {
             sFXMuteToggle.isOn = false;
+            overheatMuteToggle.enabled = true;
 
-            //Check if the player hasn't opted to turn off the overheat alarm
-            //and turn it off if the SFX volume slider is set to zero
             if (overheatMuteToggle.isOn == true)
             {
                 overheatMuteToggle.isOn = false;
@@ -171,8 +169,5 @@ public class VolumeControl : MonoBehaviour
             //And enable the overheat alarm mute toggle
             overheatMuteToggle.enabled = true;
         }
-
-        if (overheatAlarmVolume == -80.0f)
-            overheatMuteToggle.isOn = false;
     }
 }
