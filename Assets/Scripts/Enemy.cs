@@ -17,10 +17,9 @@ public class Enemy : MonoBehaviour
     private GameController gameController;
     private UIController uiController;
     private MovementController movementController;
-    //Sound effect played when an enemy dies
-    private AudioSource enemyDied;
-    //Sound effect played when the Black Hole takes damage
-    private AudioSource takeDamage;
+    //Sound effects
+    private AudioSource sfxEnemyDie;
+    private AudioSource sfxBlackholeDamage;
 
 
     void Start()
@@ -30,8 +29,8 @@ public class Enemy : MonoBehaviour
         uiController = GameObject.Find("UI Controller").GetComponent<UIController>();
         movementController = GameObject.Find("Guardian Controller").GetComponent<MovementController>();
         //Find these audio sources
-        enemyDied = GameObject.Find("EnemyDied").GetComponent<AudioSource>();
-        takeDamage = GameObject.Find("TakeDamage").GetComponent<AudioSource>();
+        sfxEnemyDie = GameObject.Find("sfx_enemy_die").GetComponent<AudioSource>();
+        sfxBlackholeDamage = GameObject.Find("sfx_blackhole_damage").GetComponent<AudioSource>();
     }
 
 
@@ -67,7 +66,7 @@ public class Enemy : MonoBehaviour
         uiController.healthBar.value -= 1;
 
         //Play sound effect
-        takeDamage.Play();
+        sfxBlackholeDamage.Play();
 
         //If health falls to zero, the player is dead and the Black Hole starts to collapse
         if (gameController.health <= 0)
@@ -90,6 +89,6 @@ public class Enemy : MonoBehaviour
         gameController.score += 100;
 
         //Play sound effect
-        enemyDied.Play();
+        sfxEnemyDie.Play();
     }
 }

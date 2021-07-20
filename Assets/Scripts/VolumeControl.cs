@@ -6,55 +6,173 @@ using UnityEngine.Audio;
 
 public class VolumeControl : MonoBehaviour
 {
-    [SerializeField]
-    private string volumeParameter;
-    [SerializeField]
-    private AudioMixer audioMixer;
-    [SerializeField]
-    private Slider volumeSlider;
-    [SerializeField]
-    private float volumeMultipler = 30f;
-    [SerializeField]
-    private Toggle muteToggle;
-    private bool disableToggleEvent;
+    public AudioMixer audioMixer;
+    //The multiplier by which volume changes with a slider
+    public float volumeMultipler;
+
+    //-----------------------------------------------------------------------------Music Controls
+    //Music slider controls
+    public string musicVolumeParameter;
+    public Slider musicVolumeSlider;
+    //Music mute toggle controls
+    public Toggle musicMuteToggle;
+    private bool disableMusicToggleEvent;
+
+    //-----------------------------------------------------------------------------SFX Controls
+    //SFX slider controls
+    public string sFXVolumeParameter;
+    public Slider sFXVolumeSlider;
+    //SFX mute toggle controls
+    public Toggle sFXMuteToggle;
+    private bool disableSFXToggleEvent;
+
+    //Overheat alarm mute toggle controls
+    public string overheatAlarmVolumeParameter;
+    public Toggle overheatMuteToggle;
+    private float overheatAlarmVolume;
+    private bool gameToggledAlarmMute;
 
     private void Awake()
     {
-        volumeSlider.onValueChanged.AddListener(HandleSliderValueChanged);
-        muteToggle.onValueChanged.AddListener(ToggleValueChanged);
+        //Register UI events for music volume slider and mute toggle
+        musicVolumeSlider.onValueChanged.AddListener(MusicVolumeSlider);
+        musicMuteToggle.onValueChanged.AddListener(MusicMuteToggle);
+
+        //Register UI events for SFX volume slider and mute toggle
+        sFXVolumeSlider.onValueChanged.AddListener(SFXVolumeSlider);
+        sFXMuteToggle.onValueChanged.AddListener(SFXMuteToggle);
+
+        //Register UI event for overheat alarm mute toggle
+        overheatMuteToggle.onValueChanged.AddListener(OverheatMuteToggle);
     }
 
     private void OnDisable()
     {
-        PlayerPrefs.SetFloat(volumeParameter, volumeSlider.value);
+        //Record the player's preferences when the options menu is disabled
+        PlayerPrefs.SetFloat(musicVolumeParameter, musicVolumeSlider.value);
+        PlayerPrefs.SetFloat(sFXVolumeParameter, sFXVolumeSlider.value);
+        PlayerPrefs.SetFloat(overheatAlarmVolumeParameter, overheatAlarmVolume);
     }
 
-    private void HandleSliderValueChanged(float value)
+    private void MusicVolumeSlider(float value)
     {
-        if (volumeSlider.value > 0.001)
+        //If the music volume slider isn't zero, change the volume of the music
+        if (musicVolumeSlider.value > 0.001)
         {
-            audioMixer.SetFloat(volumeParameter, Mathf.Log10(value) * volumeMultipler);
-            disableToggleEvent = true;
-            muteToggle.isOn = volumeSlider.value > volumeSlider.minValue;
-            disableToggleEvent = false;
+            audioMixer.SetFloat(musicVolumeParameter, Mathf.Log10(value) * volumeMultipler);
+            disableMusicToggleEvent = true;
+            musicMuteToggle.isOn = musicVolumeSlider.value > musicVolumeSlider.minValue;
+            disableMusicToggleEvent = false;
         }
+        //Otherwise, mute the music's volume
         else
-            audioMixer.SetFloat(volumeParameter, -80.0f);
+            audioMixer.SetFloat(musicVolumeParameter, -80.0f);
     }
 
-    private void ToggleValueChanged(bool enableSound)
+    private void MusicMuteToggle(bool enableMusic)
     {
-        if (disableToggleEvent)
+        if (disableMusicToggleEvent)
             return;
 
-        if (enableSound)
-            volumeSlider.value = volumeSlider.maxValue;
+        //Set the music volume's slider based on the toggle
+        if (enableMusic)
+            musicVolumeSlider.value = musicVolumeSlider.maxValue;
         else
-            volumeSlider.value = volumeSlider.minValue;
+            musicVolumeSlider.value = musicVolumeSlider.minValue;
+    }
+
+    private void SFXVolumeSlider(float value)
+    {
+        //If the SFX volume slider isn't zero, change the volume of the SFX
+        if (sFXVolumeSlider.value > 0.001)
+        {
+            audioMixer.SetFloat(sFXVolumeParameter, Mathf.Log10(value) * volumeMultipler);
+            disableSFXToggleEvent = true;
+            sFXMuteToggle.isOn = sFXVolumeSlider.value > sFXVolumeSlider.minValue;
+            disableSFXToggleEvent = false;
+        }
+        //Otherwise, mute the SFX volume
+        else
+            audioMixer.SetFloat(sFXVolumeParameter, -80.0f);
+    }
+
+    private void SFXMuteToggle(bool enableSFX)
+    {
+        if (disableSFXToggleEvent)
+            return;
+
+        //Set the SFX volume's slider based on the toggle
+        if (enableSFX)
+            sFXVolumeSlider.value = sFXVolumeSlider.maxValue;
+        else
+            sFXVolumeSlider.value = sFXVolumeSlider.minValue;
+    }
+
+    private void OverheatMuteToggle(bool enableOverheatAlarm)
+    {
+        if (disableSFXToggleEvent)
+            return;
+
+        //Set the overheat alarm volume based on the toggle
+        if (enableOverheatAlarm)
+        {
+            overheatAlarmVolume = 0f;
+            audioMixer.SetFloat(overheatAlarmVolumeParameter, overheatAlarmVolume);
+        }
+        else
+        {
+            overheatAlarmVolume = -80f;
+            audioMixer.SetFloat(overheatAlarmVolumeParameter, overheatAlarmVolume);
+        }
     }
 
     void Start()
     {
-        volumeSlider.value = PlayerPrefs.GetFloat(volumeParameter, volumeSlider.value);
+        //Get the player's preferences when the game starts
+        musicVolumeSlider.value = PlayerPrefs.GetFloat(musicVolumeParameter, musicVolumeSlider.value);
+        sFXVolumeSlider.value = PlayerPrefs.GetFloat(sFXVolumeParameter, sFXVolumeSlider.value);
+        overheatAlarmVolume = PlayerPrefs.GetFloat(overheatAlarmVolumeParameter, overheatAlarmVolume);
+
+        if (overheatAlarmVolume == -80.0f)
+            overheatMuteToggle.isOn = false;
+    }
+
+    void Update()
+    {
+        //Turn mute toggles off if volume sliders are set to zero
+        if (musicVolumeSlider.value == 0f)
+            musicMuteToggle.isOn = false;
+
+        if (sFXVolumeSlider.value == 0f)
+        {
+            sFXMuteToggle.isOn = false;
+
+            //Check if the player hasn't opted to turn off the overheat alarm
+            //and turn it off if the SFX volume slider is set to zero
+            if (overheatMuteToggle.isOn == true)
+            {
+                overheatMuteToggle.isOn = false;
+                gameToggledAlarmMute = true;
+            }
+
+            //Also disable the overheat alarm mute toggle
+            overheatMuteToggle.enabled = false;
+        }
+        else 
+        {
+            //If the player didn't turn off the overheat alarm
+            //and the SFX volume slider is not set to zero, turn the alarm back on
+            if (gameToggledAlarmMute)
+            {
+                overheatMuteToggle.isOn = true;
+                gameToggledAlarmMute = false;
+            }
+
+            //And enable the overheat alarm mute toggle
+            overheatMuteToggle.enabled = true;
+        }
+
+        if (overheatAlarmVolume == -80.0f)
+            overheatMuteToggle.isOn = false;
     }
 }

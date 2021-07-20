@@ -5,28 +5,34 @@ using UnityEngine.Audio;
 
 public class AudioEffects : MonoBehaviour
 {
+    //-----------------------------------------------------------------------------Public Variables (Reference-Types)
+    //Calls the following scripts
     public GameController gameController;
     public Spawner spawner;
 
-    [SerializeField] private AudioMixer audioMixer;
+    //Call the audio mixer
+    public AudioMixer audioMixer;
 
-    public List<AudioMixerSnapshot> level;
+    //The default audio mixer snapshot
+    public AudioMixerSnapshot firstLevel;
+    //Audio mixer snapshots that play as the player's score increases
+    public List<AudioMixerSnapshot> levelSnapshot;
+    //The transition time between snapshots
     public List<float> transitionTime;
 
     void Start()
     {
-        level[0].TransitionTo(transitionTime[0]);
+        //Play the default audio snapshot
+        firstLevel.TransitionTo(0f);
     }
 
     void Update()
     {
-        if (gameController.score >= spawner.levelControllers[0])
-            level[1].TransitionTo(transitionTime[1]);
-
-        if (gameController.score >= spawner.levelControllers[1])
-            level[2].TransitionTo(transitionTime[2]);
-
-        if (gameController.score >= spawner.levelControllers[2])
-            level[3].TransitionTo(transitionTime[3]);
+        //Transition to the next audio snapshot when the player's level increases
+        for (int i = 0; i < levelSnapshot.Count; i++)
+        {
+            if (gameController.score >= spawner.levelControllers[i])
+                levelSnapshot[i].TransitionTo(transitionTime[i]);
+        }
     }
 }

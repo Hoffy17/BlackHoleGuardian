@@ -14,11 +14,9 @@ public class MovementController : MonoBehaviour
     //Rate at which the overheat meter decreases
     public float coolRate;
     //Checks whether to play particles when the player collects an upgrade
-    [HideInInspector]
-    public bool playUpgradePS;
+    [HideInInspector] public bool playUpgradePS;
     //Checks whether the Black Hole has started to collapse
-    [HideInInspector]
-    public bool blackHoleCollapsed;
+    [HideInInspector] public bool blackHoleCollapsed;
     //The colour of the player as they overheat
     public Color overheatColor;
     //The values that trigger the different stages of the overheat alarm
@@ -39,10 +37,10 @@ public class MovementController : MonoBehaviour
     //Animator controlling the Black Hole collapsing
     public Animator blackHoleAnimator;
     //Sound effects
-    public AudioSource move;
-    public AudioSource warp;
-    public AudioSource playerExplode;
-    public AudioSource blackHoleCollapse;
+    public AudioSource sfxPlayerMove;
+    public AudioSource sfxPlayerWarp;
+    public AudioSource sfxPlayerExplode;
+    public AudioSource sfxBlackholeCollapse;
     //Alarm sound for the overheat meter
     public GameObject overheatAlarm;
 
@@ -117,12 +115,12 @@ public class MovementController : MonoBehaviour
         if (Input.GetKey(KeyCode.D))
         {
             transform.Rotate(rotationAxis * Time.deltaTime * rotationSpeed);
-            move.Play();
+            sfxPlayerMove.Play();
         }
         if (Input.GetKey(KeyCode.A))
         {
             transform.Rotate(-rotationAxis * Time.deltaTime * rotationSpeed);
-            move.Play();
+            sfxPlayerMove.Play();
         }
 
         //The player uses the Q key to warp 180 degrees around the Black Hole
@@ -136,7 +134,7 @@ public class MovementController : MonoBehaviour
             warpPoint.SetActive(false);
 
             //Play the sound effect
-            warp.Play();
+            sfxPlayerWarp.Play();
         }
     }
 
@@ -162,7 +160,7 @@ public class MovementController : MonoBehaviour
 
             //Play the sound effect
             overheatAlarm.SetActive(false);
-            playerExplode.Play();
+            sfxPlayerExplode.Play();
         }
     }
 
@@ -216,7 +214,7 @@ public class MovementController : MonoBehaviour
             //Play the Black Hole's expanding animation
             blackHoleAnimator.SetBool("Black Hole Expand", true);
             //Play the sound effect
-            blackHoleCollapse.Play();
+            sfxBlackholeCollapse.Play();
 
             //Start the timer until Game Over menu is displayed
             expandTime = 0.0f;

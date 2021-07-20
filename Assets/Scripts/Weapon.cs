@@ -10,8 +10,7 @@ public class Weapon : MonoBehaviour
     //Rate at which the player can fire projectiles with a rapid weapon upgrade
     public float refireRateRapid;
     //Checks whether the player is able to fire projectiles
-    [HideInInspector]
-    public bool canShoot;
+    [HideInInspector] public bool canShoot;
 
     //-----------------------------------------------------------------------------Public Variables (Reference-Types)
     //List of player projectile types
@@ -19,7 +18,7 @@ public class Weapon : MonoBehaviour
     //List of extra weapons that are activated by the wide weapon upgrade
     public List<GameObject> weaponsToActivate;
     //Sound effect played when the player fires a projectile
-    public AudioSource shootSound;
+    public AudioSource sfxWeaponShoot;
 
     //-----------------------------------------------------------------------------Private Variables (Value-Types)
     //Amount of time that is required before the player can again fire projectiles
@@ -79,13 +78,13 @@ public class Weapon : MonoBehaviour
         if (!gameController.largeActivated)
         {
             Instantiate(projectileObject[0], transform.position, transform.rotation);
-            shootSound.Play();
+            sfxWeaponShoot.Play();
         }
         //If the player has the large weapon upgrade, fire large projectiles
         else
         {
             Instantiate(projectileObject[1], transform.position, transform.rotation);
-            shootSound.Play();
+            sfxWeaponShoot.Play();
         }
 
         //Create a delay between shots fired

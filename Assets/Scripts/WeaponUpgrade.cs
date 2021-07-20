@@ -14,7 +14,7 @@ public class WeaponUpgrade : MonoBehaviour
     private MovementController movementController;
     private Spawner spawner;
     //Sound effect played when the player collects a weapon upgrade
-    private AudioSource getUpgrade;
+    private AudioSource sfxPlayerGetUpgrade;
 
 
     void Start()
@@ -24,7 +24,7 @@ public class WeaponUpgrade : MonoBehaviour
         movementController = GameObject.Find("Guardian Controller").GetComponent<MovementController>();
         spawner = GameObject.Find("Spawners").GetComponent<Spawner>();
         //Find this audio source
-        getUpgrade = GameObject.Find("GetUpgrade").GetComponent<AudioSource>();
+        sfxPlayerGetUpgrade = GameObject.Find("sfx_player_getupgrade").GetComponent<AudioSource>();
     }
 
 
@@ -73,7 +73,7 @@ public class WeaponUpgrade : MonoBehaviour
         }
 
         //Play sound effect
-        getUpgrade.Play();
+        sfxPlayerGetUpgrade.Play();
 
         DestroyUpgrade();
     }

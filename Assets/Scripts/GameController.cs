@@ -8,30 +8,21 @@ public class GameController : MonoBehaviour
     //The player's health before the game ends
     public int health;
     //The player's score when enemies are destroyed
-    [HideInInspector]
-    public int score = 0;
+    [HideInInspector] public int score = 0;
     //The player's high score
-    [HideInInspector]
-    public int highScore;
+    [HideInInspector] public int highScore;
     //The value of the overheat meter
-    [HideInInspector]
-    public float overheat;
+    [HideInInspector] public float overheat;
     //Checks whether the player can move
-    [HideInInspector]
-    public bool isDead;
+    [HideInInspector] public bool isDead;
     //Checks whether the game is over
-    [HideInInspector]
-    public bool gameIsOver;
+    [HideInInspector] public bool gameIsOver;
     //Checks whether the player has acquired the wide weapon upgrade
-    [HideInInspector]
-    public bool wideActivated;
-
+    [HideInInspector] public bool wideActivated;
     //Checks whether the player has acquired the rapid weapon upgrade
-    [HideInInspector]
-    public bool rapidActivated;
+    [HideInInspector] public bool rapidActivated;
     //Checks whether the player has acquired the large weapon upgrade
-    [HideInInspector]
-    public bool largeActivated;
+    [HideInInspector] public bool largeActivated;
 
 
     void Start()

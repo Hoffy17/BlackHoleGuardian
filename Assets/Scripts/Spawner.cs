@@ -12,8 +12,7 @@ public class Spawner : MonoBehaviour
     //Scores that the player must reach before faster enemies are spawned instead of slower ones
     public List<float> difficultyControllers;
     //Checks whether a weapon upgrade is in the scene
-    [HideInInspector]
-    public bool weaponUpgradeInScene;
+    [HideInInspector] public bool weaponUpgradeInScene;
 
     //-----------------------------------------------------------------------------Public Variables (Reference-Types)
     //A list of spawner objects in the scene
